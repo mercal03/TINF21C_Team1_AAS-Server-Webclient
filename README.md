@@ -1,9 +1,9 @@
 # TINF21C-AAS-Server-Webclient
 # Rollen
 
-Projektleiterin: Dominik Samara
-Produktmanager: Rittmann Martin
-Testmanager: Niedermaier Anja
-Systemarchitekt: Hintze Marcel
-Tech. Dokumentation: Engelmann Tom
-Entwickler: Helms Severin
+Projektleiterin: Dominik Samara\n
+Produktmanager: Rittmann Martin\n
+Testmanager: Niedermaier Anja\n
+Systemarchitekt: Hintze Marcel\n
+Tech. Dokumentation: Engelmann Tom\n
+Entwickler: Helms Severin\n

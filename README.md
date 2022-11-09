@@ -8,8 +8,8 @@ We want to change this and create the frontend of an asset administartion shell 
 
 # Tasks
 * Functional: 
-    Adding AASX-Servers via URL (including Server-Validation)
-    Removing AASX-Servers
+   * Adding AASX-Servers via URL (including Server-Validation)
+   * Removing AASX-Servers
     Display of all digital twins of a selected server
     Opening the detail view for any asset
     Searching for a specific asset by serial number or name

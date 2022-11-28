@@ -1,0 +1,1 @@
+//Hier wird der Filter gerendert und irgendwie muss dass an itemview oder so weitergegeben werden, dass nur passende ergebnisse gerendert werden

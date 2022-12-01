@@ -1,1 +1,14 @@
-//Hier wird der Filter gerendert und irgendwie muss dass an itemview oder so weitergegeben werden, dass nur passende ergebnisse gerendert werden
+import React from 'react';
+import "./filter.css";
+
+class Filter extends React.Component {
+    render() {
+        return (
+            <div>
+                <p>Filter</p>
+            </div>
+        );
+    }
+}
+
+export default Filter;

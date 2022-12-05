@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import "./index.css";
 import Filter from "./filter";
 import ItemView from "./itemview";
-import {request, aasIDs, firstRender} from "./backend";
+import {requestIDs, aasIDs, firstRender} from "./backend";
 
 class Main extends React.Component {
     render() {
@@ -18,7 +18,7 @@ class Main extends React.Component {
 }
 
 const index = ReactDOM.createRoot(document.getElementById('root'));
-request();
+requestIDs();
 let interval = setInterval(function () {
     if (firstRender) {
         index.render(<Main/>);

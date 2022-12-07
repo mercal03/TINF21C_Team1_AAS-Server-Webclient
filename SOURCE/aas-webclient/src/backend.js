@@ -36,6 +36,7 @@ export function getShell(id) {
         if (request.readyState === 4) {
             if (request.status === 200) {
                 let json = JSON.parse(request.responseText);
+                console.log(id);
                 console.log(json);
             } else {
                 alert("Request failed");
@@ -60,5 +61,3 @@ export function getSubmodel(id, subId) {
         }
     }
 }
-
-//Basst

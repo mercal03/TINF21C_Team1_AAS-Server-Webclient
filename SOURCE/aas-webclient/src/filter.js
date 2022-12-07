@@ -1,10 +1,9 @@
 import React from 'react';
-import "./filter.css";
 
 class Filter extends React.Component {
     render() {
         return (
-            <div>
+            <div id={"filter"}>
                 <p>Filter</p>
             </div>
         );

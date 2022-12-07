@@ -1,11 +1,10 @@
 import React from 'react';
-import "./item.css";
 
 class Item extends React.Component {
     render() {
         return (
-            <div>
-                <p>Item</p>
+            <div className={"item"}>
+                <p>{this.props.name}</p>
             </div>
         );
     }

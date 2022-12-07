@@ -1,17 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import "./index.css";
 import Filter from "./filter";
 import ItemView from "./itemview";
-import {requestIDs, aasIDs, firstRender} from "./backend";
+import {firstRender, requestIDs} from "./backend";
+import "./style.css";
 
 class Main extends React.Component {
     render() {
         return (
             <div>
-                {aasIDs.map(id => {
-                    return <p>{id}</p>
-                })}
+                <div id={"header"}>
+                    <h1>AAS-Webclient</h1>
+                    <div id="serverinfo">
+                        <p>Server: "address to server"</p>
+                        <button>Add/Delete Server</button>
+                    </div>
+                </div>
+                <Filter/>
+                <ItemView/>
             </div>
         );
     }

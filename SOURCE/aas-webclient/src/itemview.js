@@ -1,12 +1,14 @@
 import React from 'react';
-import "./itemview.css";
 import Item from "./item";
+import {aasIDs, getShell} from "./backend";
 
 class ItemView extends React.Component {
     render() {
         return (
-            <div>
-                <p>ItemView</p>
+            <div id={"itemview"}>
+                {aasIDs.map(id => {
+                    return <Item name={id}/>
+                })}
             </div>
         );
     }

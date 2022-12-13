@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Filter from "./filter";
 import ItemView from "./itemview";
-import {firstRender, requestIDs} from "./backend";
 import "./style.css";
 
 class Main extends React.Component {
@@ -23,11 +22,9 @@ class Main extends React.Component {
     }
 }
 
-const index = ReactDOM.createRoot(document.getElementById('root'));
-requestIDs();
-let interval = setInterval(function () {
-    if (firstRender) {
-        index.render(<Main/>);
-        clearInterval(interval);
-    }
-}, 100);
+export const index = ReactDOM.createRoot(document.getElementById('root'));
+index.render(<Main/>);
+
+export function reload() {
+    index.render(<Main/>);
+}

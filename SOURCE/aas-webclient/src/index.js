@@ -2,12 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Filter from "./filter";
 import ItemView from "./itemview";
-import "./style.css";
+import Header from "./header"
+//import "./style.css";
+import "./bootstrap/bootstrap.rtl.min.css"
 
 class Main extends React.Component {
     render() {
         return (
-            <div>
+            <div className='vh-100 d-flex flex-column'>
+                <Header/>
+                <main className='d-flex flex-row flex-fill'>
+                    <Filter/>
+                    <ItemView/>
+                </main>
+            </div>);
+           
+            
+           /*  <div>
                 <div id={"header"}>
                     <h1>AAS-Webclient</h1>
                     <div id="serverinfo">
@@ -15,10 +26,11 @@ class Main extends React.Component {
                         <button>Add/Delete Server</button>
                     </div>
                 </div>
-                <Filter/>
-                <ItemView/>
-            </div>
-        );
+
+
+                
+            </div> */
+        
     }
 }
 

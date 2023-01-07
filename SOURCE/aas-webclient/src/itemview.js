@@ -9,11 +9,15 @@ class ItemView extends React.Component {
 
     render() {
         return (
-            <div id={"itemview"}>
+            <div className="p-2 flex-fill">
+            <h3>Assets</h3>
+            <p>No contents available, connect Server to display Assets</p>
+            </div>
+            /* <div id={"itemview"}>
                 {aasIDs.map(id => {
                     return <Item name={id}/>
                 })}
-            </div>
+            </div> */
         );
     }
 }

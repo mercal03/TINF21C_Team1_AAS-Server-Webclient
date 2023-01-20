@@ -1,24 +1,20 @@
 import {reload} from "./index";
 
-let serverUrl = "http://localhost:51310";
+let serverUrl = "http://localhost:5001";
 export let aasIDs = [];
 
 export function getAllShells() { //speichert alle ids der shells auf der server ab
     let request = new XMLHttpRequest();
-    request.open("GET", serverUrl + "/server/listaas");
+    request.open("GET", serverUrl + "/shells");
     request.send();
 
     request.onreadystatechange = () => {
         if (request.readyState === 4) {
             if (request.status === 200) {
                 let json = JSON.parse(request.responseText);
-                let aaslist = json["aaslist"];
 
-                for (let i = 0; i < aaslist.length; i++) {
-                    let id = aaslist[i];
-                    id = id.substring(id.search(":") + 2);
-                    id = id.substring(0, id.search(":") - 1);
-                    aasIDs.push(id);
+                for (let i = 0; i < json.length; i++) {
+                    aasIDs.push(json[i]["idShort"]);
                 }
                 reload();
             } else {
@@ -31,7 +27,7 @@ export function getAllShells() { //speichert alle ids der shells auf der server 
 export function getShell(event) {
     let id = event.target.innerHTML;
     let request = new XMLHttpRequest();
-    request.open("GET", serverUrl + "/aas/" + id + "/complete");
+    request.open("GET", serverUrl + "/shells/" + id);
     request.send();
 
     request.onreadystatechange = () => {

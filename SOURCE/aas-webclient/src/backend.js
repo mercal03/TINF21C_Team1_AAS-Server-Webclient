@@ -1,7 +1,7 @@
 import {reload} from "./index";
 
 let serverUrl = "http://localhost:5001";
-export let aasIDs = [];
+export let shells = [];
 
 export function getAllShells() { //speichert alle ids der shells auf der server ab
     let request = new XMLHttpRequest();
@@ -12,9 +12,13 @@ export function getAllShells() { //speichert alle ids der shells auf der server 
         if (request.readyState === 4) {
             if (request.status === 200) {
                 let json = JSON.parse(request.responseText);
+                console.log("Alle Infos");
+                console.log(json);
 
                 for (let i = 0; i < json.length; i++) {
-                    aasIDs.push(json[i]["idShort"]);
+                    let tempJson = json[i];
+                    let shell = [tempJson["idShort"], tempJson["id"], tempJson["submodels"]];
+                    shells.push(shell);
                 }
                 reload();
             } else {
@@ -27,7 +31,7 @@ export function getAllShells() { //speichert alle ids der shells auf der server 
 export function getShell(event) {
     let id = event.target.innerHTML;
     let request = new XMLHttpRequest();
-    request.open("GET", serverUrl + "/shells/" + id);
+    request.open("GET", serverUrl + "/shells/" + btoa(shells[findIndexOfIdShort(id)][1]));
     request.send();
 
     request.onreadystatechange = () => {
@@ -43,36 +47,11 @@ export function getShell(event) {
     }
 }
 
-export function getShellThumbnail(id) {
-    let request = new XMLHttpRequest();
-    request.open("GET", serverUrl + "/aas/" + id + "/thumbnail");
-    request.send();
-
-    request.onreadystatechange = () => {
-        if (request.readyState === 4) {
-            if (request.status === 200) {
-                //Gibt ein Bild zurück
-                console.log(request.response);
-            } else {
-                alert("Request failed");
-            }
+function findIndexOfIdShort(id) {
+    for (let i = 0; i < shells.length; i++) {
+        if (shells[i][0] === id) {
+            return i;
         }
     }
-}
-
-export function getSubmodel(id, subId) { //ehrlich gesagt weiß ich noch nie ganz wie dieser api call funktioniert
-    let request = new XMLHttpRequest();
-    request.open("GET", serverUrl + "/aas/" + id + "/submodels/" + subId);
-    request.send();
-
-    request.onreadystatechange = () => {
-        if (request.readyState === 4) {
-            if (request.status === 200) {
-                let json = JSON.parse(request.responseText);
-                console.log(json);
-            } else {
-                alert("Request failed");
-            }
-        }
-    }
+    return -1;
 }

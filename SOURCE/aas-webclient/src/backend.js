@@ -28,8 +28,9 @@ export function getAllShells() { //speichert alle ids der shells auf der server 
     }
 }
 
-export function getShell(event) {
-    let id = event.target.innerHTML;
+export function getShell(id) {
+    //let id = event.target.innerHTML;
+    
     let request = new XMLHttpRequest();
     request.open("GET", serverUrl + "/shells/" + btoa(shells[findIndexOfIdShort(id)][1]));
     request.send();
@@ -40,7 +41,7 @@ export function getShell(event) {
                 let json = JSON.parse(request.responseText);
                 //Gibt JSON mit allen Daten zu der Shell
                 console.log(json);
-                openModal(json);
+                return request.responseText;
             } else {
                 alert("Request failed");
             }
@@ -55,8 +56,4 @@ function findIndexOfIdShort(id) {
         }
     }
     return -1;
-}
-
-function openModal(json){
-    
 }

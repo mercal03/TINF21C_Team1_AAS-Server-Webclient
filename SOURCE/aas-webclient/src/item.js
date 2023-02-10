@@ -1,8 +1,9 @@
 import React from 'react';
-import { Modal, Button } from "react-bootstrap";
-import {getShell} from "./backend";
+import OpenModal from "./openModal"
 
 class Item extends React.Component {
+    
+
     render() {
         let name = this.props.name;
         return (
@@ -10,9 +11,7 @@ class Item extends React.Component {
                 <div>
                    {name} 
                 </div>
-                <button onClick={getShell} className={"btn btn-primary"}>
-                    Open Asset
-                </button>
+                <OpenModal name = {name}/>
             </div>
         );
     }

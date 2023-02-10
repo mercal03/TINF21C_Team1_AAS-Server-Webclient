@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import Filter from "./filter";
 import ItemView from "./itemview";
 import Header from "./header"
+import Modal from "./modal"
 //import "./style.css";
 import "./bootstrap/bootstrap.rtl.min.css"
 
@@ -14,22 +15,9 @@ class Main extends React.Component {
                 <main className='d-flex flex-row flex-fill'>
                     <Filter/>
                     <ItemView/>
+                    <Modal/>
                 </main>
             </div>);
-           
-            
-           /*  <div>
-                <div id={"header"}>
-                    <h1>AAS-Webclient</h1>
-                    <div id="serverinfo">
-                        <p>Server: "address to server"</p>
-                        <button>Add/Delete Server</button>
-                    </div>
-                </div>
-
-
-                
-            </div> */
         
     }
 }

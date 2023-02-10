@@ -40,6 +40,7 @@ export function getShell(event) {
                 let json = JSON.parse(request.responseText);
                 //Gibt JSON mit allen Daten zu der Shell
                 console.log(json);
+                openModal(json);
             } else {
                 alert("Request failed");
             }
@@ -54,4 +55,8 @@ function findIndexOfIdShort(id) {
         }
     }
     return -1;
+}
+
+function openModal(json){
+    
 }

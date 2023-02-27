@@ -28,25 +28,9 @@ export function getAllShells() { //speichert alle ids der shells auf der server 
     }
 }
 
-export function getShell(id) {
-    //let id = event.target.innerHTML;
-    
-    let request = new XMLHttpRequest();
-    request.open("GET", serverUrl + "/shells/" + btoa(shells[findIndexOfIdShort(id)][1]));
-    request.send();
-
-    request.onreadystatechange = () => {
-        if (request.readyState === 4) {
-            if (request.status === 200) {
-                let json = JSON.parse(request.responseText);
-                //Gibt JSON mit allen Daten zu der Shell
-                console.log(json);
-                return request.responseText;
-            } else {
-                alert("Request failed");
-            }
-        }
-    }
+export async function getShell(id) {
+    return await fetch(serverUrl + "/shells/" + btoa(shells[findIndexOfIdShort(id)][1]))
+        .then(response => response.text());
 }
 
 function findIndexOfIdShort(id) {

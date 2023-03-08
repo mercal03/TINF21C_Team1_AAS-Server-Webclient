@@ -2,11 +2,15 @@ import React from 'react';
 import {Modal, Button} from "react-bootstrap";
 import {getShell} from './backend';
 
-
 class OpenModal extends React.Component {
     state = {
         isOpen: false,
-        infoContent: "false"
+        infoContent: getShell(this.props.name)
+        .then(data => {
+            this.setState({
+                infoContent: data,
+            })
+        })
     };
 
     openModal = () => {
@@ -43,9 +47,7 @@ class OpenModal extends React.Component {
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <p>
-                                {this.state.infoContent}
-                            </p>
+                            <p> {this.state.infoContent}</p>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={this.closeModal}>Close</Button>

@@ -24,9 +24,10 @@ class Filter extends React.Component {
 
                 <h3>Suche:</h3>
                 {/* Suchfeldleiste */}
-                <input id={"searchField"} type={"text"} placeholder={"Search"}/>
-                <button class={"btn btn-primary"} onClick={this.filterForName}> Search</button>
-
+                <form class="form-inline d-md-flex">
+                    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+                    <button class="btn btn-primary my-2 my-sm-0" type="submit" onClick={this.filterForName}>Search</button>
+                </form>
                 <h3>Filter:</h3>
 
                 {/* filter optionen */}

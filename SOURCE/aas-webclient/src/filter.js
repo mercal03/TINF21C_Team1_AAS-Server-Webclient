@@ -21,10 +21,13 @@ class Filter extends React.Component {
     render() {
         return (
             <div className="bg-primary-subtle w-25 p-2">
-                <h3>Filters</h3>
+
+                <h3>Suche:</h3>
                 {/* Suchfeldleiste */}
                 <input id={"searchField"} type={"text"} placeholder={"Search"}/>
                 <button class={"btn btn-primary"} onClick={this.filterForName}> Search</button>
+
+                <h3>Filter:</h3>
 
                 {/* filter optionen */}
 

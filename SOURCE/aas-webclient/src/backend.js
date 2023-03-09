@@ -1,6 +1,6 @@
 import {reload} from "./index";
 
-let serverUrl = "http://localhost:5001";
+let serverUrl = "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/";
 export let shells = []; //speicher infos zu allen shells auf dem server ab
 
 export function getAllShells() {//speichert alle ids der shells auf der server ab

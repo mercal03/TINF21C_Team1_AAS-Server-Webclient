@@ -1,21 +1,30 @@
 import React from 'react';
 import Item from "./item";
-import {shells, getAllShells} from "./backend";
+import {getAllShells} from "./backend";
+
+export let shells = [];
 
 class ItemView extends React.Component {
+    state = {
+        displayedContent: []
+    }
+
     componentDidMount() {
-        getAllShells();
+        getAllShells().then(response => {
+            shells = response;
+            this.setState({
+                displayedContent: response
+            })
+        })
     }
 
     render() {
-        console.log("Reduzierte Infos");
-        console.log(shells);
         return (
             <div className="p-2 flex-fill">
             <h3>Assets</h3>
             <div id={"itemview"}>
-                {shells.map(id => {
-                    return <Item name={id[0]}/>
+                {this.state.displayedContent.map(id => {
+                    return <Item name={id["idShort"]}/>
                 })}
             </div>
             </div> 

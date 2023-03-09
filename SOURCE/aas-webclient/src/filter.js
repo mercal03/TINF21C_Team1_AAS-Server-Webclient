@@ -1,5 +1,5 @@
 import React from "react";
-import {shells} from "./backend";
+import {shells} from "./itemview";
 import button from "bootstrap/js/src/button";
 
 class Filter extends React.Component {
@@ -9,7 +9,7 @@ class Filter extends React.Component {
         let newAssetArray = [];
 
         shells.forEach(element => {
-                if (element[0].toLowerCase().search(searchInput) !== -1) { // Abfrage ob Suchstring enthalten ist
+                if (element["idShort"].toLowerCase().search(searchInput) !== -1) { // Abfrage ob Suchstring enthalten ist
                     newAssetArray.push(element);
                 }
             }
@@ -24,8 +24,8 @@ class Filter extends React.Component {
 
                 <h3>Suche:</h3>
                 {/* Suchfeldleiste */}
-                <form class="form-inline d-md-flex">
-                    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+                <form class="form-inline d-md-flex" onSubmit={event => event.preventDefault()}>
+                    <input id={"searchField"} className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button class="btn btn-primary my-2 my-sm-0" type="submit" onClick={this.filterForName}>Search</button>
                 </form>
                 <h3>Filter:</h3>

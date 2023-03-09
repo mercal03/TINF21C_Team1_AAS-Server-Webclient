@@ -1,6 +1,6 @@
 import {reload} from "./index";
 
-let serverUrl = "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/";
+let serverUrl = "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org";
 export let shells = []; //speicher infos zu allen shells auf dem server ab
 
 export function getAllShells() {//speichert alle ids der shells auf der server ab
@@ -22,6 +22,7 @@ export function getAllShells() {//speichert alle ids der shells auf der server a
                 }
                 reload(); //lädt die seite neu, sobald alle daten gespeichert wurden
             } else {
+                console.log(request.response);
                 alert("Request failed");
             }
         }

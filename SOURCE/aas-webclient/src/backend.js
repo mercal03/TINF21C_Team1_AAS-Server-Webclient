@@ -1,9 +1,10 @@
 import {shells} from "./itemview";
 
-let serverUrl = "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org";
+// let serverUrl = "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org";
+let serverUrl = "";
 
-export async function getAllShells() {
-    return await fetch(serverUrl + "/shells")
+export async function getAllShells(url) {
+    return await fetch(url + "/shells")
         .then(response => response.json());
 }
 

@@ -1,34 +1,22 @@
 import React from 'react';
 import Item from "./item";
-import {getAllShells} from "./backend";
-
-export let shells = [];
 
 class ItemView extends React.Component {
-    state = {
-        displayedContent: []
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.serverUrl !== this.props.serverUrl) {
-            getAllShells(this.props.serverUrl).then(response => {
-                shells = response;
-                this.setState({
-                    displayedContent: response
-                })
-            })
-        }
-    }
-
     render() {
-        return (
-            <div className="p-2 flex-fill">
-                <h3>Assets</h3>
-                <div id={"itemview"}>
-                    {this.state.displayedContent.map(id => {
+        let shells = JSON.parse(window.sessionStorage.getItem("content"));
+        let content = <div/>;
+        if (shells !== null) {
+            content =
+                <div>
+                    {shells.map(id => {
                         return <Item name={id["idShort"]}/>
                     })}
                 </div>
+        }
+        return (
+            <div className="p-2 flex-fill">
+                <h3>Assets</h3>
+                {content}
             </div>
         );
     }

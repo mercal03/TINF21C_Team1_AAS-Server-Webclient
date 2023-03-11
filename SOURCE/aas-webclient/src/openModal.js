@@ -15,6 +15,7 @@ class OpenModal extends React.Component {
     closeModal = () => this.setState({isOpen: false});
 
     render() {
+        let content = JSON.parse(window.sessionStorage.getItem("allShells"))[this.props.index];
         return (
             <div>
                 <div
@@ -33,7 +34,7 @@ class OpenModal extends React.Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <p>{{/*this.state.infoContent*/}}</p>
+                        <p>{JSON.stringify(content)}</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.closeModal}>Close</Button>

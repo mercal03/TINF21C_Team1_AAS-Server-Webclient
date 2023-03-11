@@ -11,7 +11,7 @@ class Item extends React.Component {
                 <div>
                    {name} 
                 </div>
-                <OpenModal name = {name}/>
+                <OpenModal name = {name} index={this.props.index}/>
             </div>
         );
     }

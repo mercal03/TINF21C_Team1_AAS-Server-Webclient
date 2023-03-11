@@ -9,5 +9,7 @@ export async function getAllShells(url) {
             window.sessionStorage.setItem("allShells", JSON.stringify(data));
             window.sessionStorage.setItem("content", JSON.stringify(data));
             index.render(<Main/>);
+        }).catch(function () {
+            alert("Request Error");
         });
 }

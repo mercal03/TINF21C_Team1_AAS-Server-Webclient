@@ -3,22 +3,29 @@ import Item from "./item";
 
 class ItemView extends React.Component {
     render() {
-        let shells = JSON.parse(window.sessionStorage.getItem("content"));
-        let content = <div/>;
-        if (shells !== null) {
-            content =
-                <div>
-                    {shells.map(id => {
-                        return <Item key={id["idShort"]} name={id["idShort"]}/>
-                    })}
-                </div>
+        if (window.sessionStorage.getItem("url") === null) {
+            return <div></div>;
+        } else {
+            let shells = JSON.parse(window.sessionStorage.getItem("content"));
+            if (shells !== null) {
+                return (
+                    <div className="p-2 flex-fill">
+                        <h3>Assets</h3>
+                        {shells.map(id => {
+                            return <Item key={id["idShort"]} name={id["idShort"]}/>
+                        })}
+                    </div>
+                );
+            } else {
+                return (
+                    <div className="position-absolute top-50 start-50 translate-middle">
+                        <div className="spinner-border" role="status">
+                            <span className="sr-only"/>
+                        </div>
+                    </div>
+                );
+            }
         }
-        return (
-            <div className="p-2 flex-fill">
-                <h3>Assets</h3>
-                {content}
-            </div>
-        );
     }
 }
 

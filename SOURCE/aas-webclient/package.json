@@ -1,5 +1,6 @@
 {
   "name": "aas-webclient",
+  "homepage": "https://f0b3c497-4d15-48ec-bc83-8d486e734486.ma.bw-cloud-instance.org/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

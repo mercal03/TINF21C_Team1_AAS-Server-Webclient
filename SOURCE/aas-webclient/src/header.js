@@ -1,10 +1,10 @@
 import React from "react";
-import {index, Main} from "./index";
+import {getAllShells} from "./backend";
 
 class Header extends React.Component {
 
     addServer() {
-        index.render(<Main serverUrl={document.getElementById("server-url").value}/>);
+        getAllShells(document.getElementById("server-url").value);
     }
 
     render() {

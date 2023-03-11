@@ -9,7 +9,7 @@ class ItemView extends React.Component {
             content =
                 <div>
                     {shells.map(id => {
-                        return <Item name={id["idShort"]}/>
+                        return <Item key={id["idShort"]} name={id["idShort"]}/>
                     })}
                 </div>
         }

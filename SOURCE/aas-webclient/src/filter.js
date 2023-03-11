@@ -34,13 +34,14 @@ class Filter extends React.Component {
 
                 <h3>Suche:</h3>
                 {/* Suchfeldleiste */}
-                <form class="form-inline d-md-flex" onSubmit={event => event.preventDefault()}>
+                <form className="form-inline d-md-flex" onSubmit={event => event.preventDefault()}>
                     <input id={"searchField"} className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                    <button class="btn btn-primary my-2 my-sm-0" type="submit" onClick={this.filterForName}>Search</button>
+                    <button className="btn btn-primary my-2 my-sm-0" type="submit" onClick={this.filterForName}>Search</button>
                 </form>
                 <h3>Filter:</h3>
 
                 <table>
+                    <tbody>
                     <tr>
                         <td>
                             <h4> Server </h4>
@@ -60,6 +61,7 @@ class Filter extends React.Component {
                             placeholder
                         </td>
                     </tr>
+                    </tbody>
                 </table>
 
                 {/* filter optionen */}

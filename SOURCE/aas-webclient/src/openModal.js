@@ -1,9 +1,11 @@
 import React from 'react';
 import {Modal, Button} from "react-bootstrap";
+import ModalBody from "./modalBody";
 
 class OpenModal extends React.Component {
     state = {
-        isOpen: false
+        isOpen: false,
+        content: JSON.parse(window.sessionStorage.getItem("shells"))[this.props.index]
     };
 
     openModal = () => {
@@ -15,7 +17,6 @@ class OpenModal extends React.Component {
     closeModal = () => this.setState({isOpen: false});
 
     render() {
-        let content = JSON.parse(window.sessionStorage.getItem("shells"))[this.props.index];
         return (
             <div>
                 <div
@@ -34,7 +35,7 @@ class OpenModal extends React.Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <p>{JSON.stringify(content)}</p>
+                        <ModalBody content={this.state.content}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.closeModal}>Close</Button>

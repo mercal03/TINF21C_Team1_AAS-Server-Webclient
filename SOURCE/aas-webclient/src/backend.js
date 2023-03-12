@@ -120,7 +120,7 @@ async function getFullShellData() {
                 });
             });
 
-            let images = technicalData ? searchForKey(technicalData) : [];
+            let images = technicalData ? searchForKey(technicalData) : null;
 
             return {
                 idShort: element.idShort,

@@ -1,5 +1,4 @@
 import React from "react";
-import button from "bootstrap/js/src/button";
 import {index, Main} from "./index";
 
 class Filter extends React.Component {
@@ -7,7 +6,7 @@ class Filter extends React.Component {
     filterForName() { //Sucht nach einem AAS name
         let searchInput = document.getElementById('searchField').value.toLowerCase();// zieht sich den Namen aus dem Inputfeld über die ID
         let newAssetArray = [];
-        let shells = JSON.parse(window.sessionStorage.getItem("allShells"));
+        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
 
         shells.forEach(element => {
                 if (element["idShort"].toLowerCase().search(searchInput) !== -1) { // Abfrage ob Suchstring enthalten ist

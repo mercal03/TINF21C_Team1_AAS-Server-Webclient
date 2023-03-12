@@ -15,7 +15,7 @@ class OpenModal extends React.Component {
     closeModal = () => this.setState({isOpen: false});
 
     render() {
-        let content = JSON.parse(window.sessionStorage.getItem("allShells"))[this.props.index];
+        let content = JSON.parse(window.sessionStorage.getItem("shells"))[this.props.index];
         return (
             <div>
                 <div

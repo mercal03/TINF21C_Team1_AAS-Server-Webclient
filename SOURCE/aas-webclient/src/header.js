@@ -1,5 +1,5 @@
 import React from "react";
-import {getAllShells} from "./backend";
+import {getFullShellData} from "./backend";
 import {index, Main} from "./index";
 
 class Header extends React.Component {
@@ -8,7 +8,7 @@ class Header extends React.Component {
         index.render(<Main/>);
         let url = document.getElementById("server-url").value;
         window.sessionStorage.setItem("url", url);
-        getAllShells(url);
+        getFullShellData();
     }
 
     clear() {

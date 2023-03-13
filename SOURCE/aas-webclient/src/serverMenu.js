@@ -49,19 +49,3 @@ class ServerMenu extends React.Component {
 }
 
 export default ServerMenu;
-
-<div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown button
-        </button>
-        <div class="dropdown-menu">
-              
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">
-                Example Server A
-              </a>
-              <a class="dropdown-item" href="#">
-                Example Server B
-              </a>
-            </div>
-      </div>

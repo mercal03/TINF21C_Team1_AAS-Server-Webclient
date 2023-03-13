@@ -21,7 +21,7 @@ class OpenModal extends React.Component {
             <div>
                 <div
                     className="d-flex align-items-center justify-content-center">
-                    <Button variant="primary" onClick={this.openModal}>
+                    <Button variant="primary" className="text-nowrap" onClick={this.openModal}>
                         Open Asset
                     </Button>
                 </div>

@@ -2,6 +2,7 @@ import React from "react";
 import {getFullShellData} from "./backend";
 import {index, Main} from "./index";
 import ServerMenu from "./serverMenu";
+import Filter from "./filter"
 
 class Header extends React.Component {
 
@@ -24,10 +25,11 @@ class Header extends React.Component {
                     <div className="d-flex flex-wrap align-items-center justify-content-md-between justify-content-center">
                         <h1 className="mx-2">AAS-Webclient</h1>
                         <div className="d-flex flex-nowrap align-items-center justify-content-between">
-                        <button onClick={this.clear}>{/* Wird wieder entfernt dient nur zum Testen*/}
-                            Clear
-                        </button>
-                       <ServerMenu/>
+                            <Filter/>
+                            <button onClick={this.clear}>{/* Wird wieder entfernt dient nur zum Testen*/}
+                                Clear
+                            </button>
+                            <ServerMenu/>
                         </div>
                         
                     </div>

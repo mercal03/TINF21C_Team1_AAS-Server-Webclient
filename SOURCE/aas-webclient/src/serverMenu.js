@@ -18,13 +18,13 @@ class ServerMenu extends React.Component {
 
   render() {
     return (
-        <Dropdown autoClose="outside" variant="light">
+        <Dropdown className="mx-2" autoClose="outside" variant="light">
           <Dropdown.Toggle  id="dropdown-autoclose-outside">
             Server Menü
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item><form
-                className="mx-2 d-flex flex-column"
+                className="mx-2 d-flex flex-row justify-content-end"
                 onSubmit={(event) => event.preventDefault()}
               >
                 <input

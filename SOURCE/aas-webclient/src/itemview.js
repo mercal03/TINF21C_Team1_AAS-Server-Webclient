@@ -11,8 +11,8 @@ class ItemView extends React.Component {
                 return (
                     <div className="p-2 col-4 bg-primary-subtle">
                         <h3>Assets</h3>
-                        {shells.map((id, i) => {
-                            return <Item key={id["idShort"]} index={i} name={id["idShort"]}/>
+                        {shells.map((shell, i) => {
+                            return <Item key={shell.idShort} index={i} name={shell.idShort} image={shell.images}/>
                         })}
                     </div>
                 );

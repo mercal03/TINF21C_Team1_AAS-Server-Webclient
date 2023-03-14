@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Filter from "./filter";
 import Header from "./header"
 import "./bootstrap/bootstrap.rtl.min.css"
 import ItemView from "./itemview";

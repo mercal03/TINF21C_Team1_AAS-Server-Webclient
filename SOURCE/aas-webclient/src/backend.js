@@ -34,7 +34,7 @@ async function findSubmodels(url, category) {
                 idShort: element.idShort,
                 id: element.id,
                 idEncoded: btoa(element.id),
-                ...extractData(element["submodelElements"]),
+                ...extractData(element.submodelElements, element.id),
             }
         });
     });
@@ -54,16 +54,16 @@ function getLangString(json) {
     return "";
 }
 
-function extractData(element, path = "") {
+function extractData(element, id, path = "") {
     let url = window.sessionStorage.getItem("url");
-    url += "submodels/" + btoa(element.id) + "/submodelelements"
+    url += "submodels/" + btoa(id) + "/submodelelements";
     let returnObject = {};
 
     for (let nameplateElement of element) {
         if (nameplateElement.modelType === "MultiLanguageProperty") {
             returnObject[nameplateElement.idShort] = getLangString(nameplateElement.value);
         } else if (nameplateElement.modelType === "SubmodelElementCollection") {
-            returnObject[nameplateElement.idShort] = extractData(nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
+            returnObject[nameplateElement.idShort] = extractData(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
         } else if (nameplateElement.modelType === "Property") {
             returnObject[nameplateElement.idShort] = nameplateElement.value;
         } else if (nameplateElement.modelType === "File") {
@@ -76,7 +76,7 @@ function extractData(element, path = "") {
 
 function searchForKey(json){
     let regex = /[pP]roductImage\d*/;
-    let returnList = []
+    let returnList = [];
     if(typeof json === "object") {
         for (let key in json) {
             if (regex.test(key) && json["FilePath"]) {
@@ -132,6 +132,7 @@ async function getFullShellData() {
                 nameplate: nameplateData ? nameplateData : null,
             }
         });
+        console.log(returnData);
         window.sessionStorage.setItem("shells", JSON.stringify(returnData));
         window.sessionStorage.setItem("content", JSON.stringify(returnData));
         index.render(<Main/>);

@@ -31,3 +31,4 @@ We want to change this and create the frontend of an asset administartion shell 
 * Helms, Severin (_Developer_)
 
 Website Preview: https://f0b3c497-4d15-48ec-bc83-8d486e734486.ma.bw-cloud-instance.org/
+Alternativlink: http://193.196.55.115

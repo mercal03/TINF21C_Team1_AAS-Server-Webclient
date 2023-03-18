@@ -1,8 +1,6 @@
 import React from "react";
 import {index, Main} from "./index";
 import Dropdown from "react-bootstrap/Dropdown";
-import {forEach} from "react-bootstrap/ElementChildren";
-import DropdownItem from "react-bootstrap/DropdownItem";
 
 class Filter extends React.Component {
     filterForName() {
@@ -42,6 +40,7 @@ class Filter extends React.Component {
             }
         });
         newAssetArray = [...new Set(newAssetArray)]
+        newAssetArray.unshift("Alle")
         var option = "";
         for (var i = 0; i < newAssetArray.length; i++) {
             option += '<option value="' + newAssetArray[i] + '">' + newAssetArray[i] + "</option>";
@@ -52,22 +51,45 @@ class Filter extends React.Component {
     filterForManufacturerName() {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
-        let manufacturerName = document.getElementById("manufacturerNameDropDown").value;
-        if (manufacturerName) {
+        let manufacturerNameDropDown = document.getElementById("manufacturerNameDropDown").value;
+        if (manufacturerNameDropDown) {
             shells.forEach((element) => {
                 if (element["nameplate"]) { // Macht für mich keinen Sinn: MARCEEEEEELLLLLLL? WIESOOOOOOOOOO?
-                    if (element["nameplate"]["ManufacturerName"].search(manufacturerName) !== -1) {
+                    if (element["nameplate"]["ManufacturerName"].search(manufacturerNameDropDown) !== -1) {
                         newAssetArray.push(element)
                     }
                 }
             })
-            if (newAssetArray.length === 0) {
-                //Error Handling
-                alert("No results found");
-            } else {
-                window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
-                index.render(<Main/>);
-            }
+        }
+        if (newAssetArray.length === 0) {
+            //Error Handling
+            alert("No results found");
+        } else {
+            window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
+            index.render(<Main/>);
+        }
+    }
+
+    searchForManufacturerName(){
+        let newAssetArray = [];
+        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+        let manufacturerNameSearchField = document.getElementById("manufacturerNameSearchField").value.toLowerCase();
+
+        if(manufacturerNameSearchField){
+            shells.forEach((element) => {
+                if (element["nameplate"]) { // Macht für mich keinen Sinn: MARCEEEEEELLLLLLL? WIESOOOOOOOOOO?
+                    if (element["nameplate"]["ManufacturerName"].toLowerCase().search(manufacturerNameSearchField) !== -1) {
+                        newAssetArray.push(element)
+                    }
+                }
+            })
+        }
+        if (newAssetArray.length === 0) {
+            //Error Handling
+            alert("No results found");
+        } else {
+            window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
+            index.render(<Main/>);
         }
     }
 
@@ -118,22 +140,23 @@ class Filter extends React.Component {
                                 onSubmit={(event) => event.preventDefault()}
                             >
                                 <input
-                                    id="blabla"
+                                    id="manufacturerNameSearchField"
                                     type="text"
                                     className="form-control form-control-dark  w-auto"
-                                    placeholder="Hersteller..." //Hier Dropdown mit Hersteller
+                                    placeholder="Hersteller"
                                 ></input>
                                 <button
                                     type="submit"
                                     className="btn btn-link mx-2 text-nowrap"
-                                    onClick={this.filterForManufacturerName}
+                                    onClick={this.searchForManufacturerName}
                                 >
                                     Search
                                 </button>
                             </form>
                         </Dropdown.Item>
                         <div className={"form-group"}>
-                            <select className={"form-control"} id={"manufacturerNameDropDown"} onChange={this.filterForManufacturerName}></select>
+                            <select className={"form-control"} id={"manufacturerNameDropDown"} onChange={this.filterForManufacturerName}>
+                            </select>
                         </div>
                     </Dropdown.Menu>
                 </Dropdown>

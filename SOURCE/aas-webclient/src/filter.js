@@ -36,12 +36,39 @@ class Filter extends React.Component {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
         shells.forEach((element) => {
-              if(element["nameplate"]){ // Macht für mich keinen Sinn: MARCEEEEEELLLLLLL? WIESOOOOOOOOOO?
-                  if(element["nameplate"]["ManufacturerName"])
-                  newAssetArray.push(element["nameplate"]["ManufacturerName"]);
-              }
+            if (element["nameplate"]) { // Macht für mich keinen Sinn: MARCEEEEEELLLLLLL? WIESOOOOOOOOOO?
+                if (element["nameplate"]["ManufacturerName"])
+                    newAssetArray.push(element["nameplate"]["ManufacturerName"]);
+            }
         });
-        return newAssetArray;
+        newAssetArray = [...new Set(newAssetArray)]
+        var option = "";
+        for (var i = 0; i < newAssetArray.length; i++) {
+            option += '<option value="' + newAssetArray[i] + '">' + newAssetArray[i] + "</option>";
+        }
+        document.getElementById("manufacturerNameDropDown").innerHTML = option;
+    }
+
+    filterForManufacturerName() {
+        let newAssetArray = [];
+        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+        let manufacturerName = document.getElementById("manufacturerNameDropDown").value;
+        if (manufacturerName) {
+            shells.forEach((element) => {
+                if (element["nameplate"]) { // Macht für mich keinen Sinn: MARCEEEEEELLLLLLL? WIESOOOOOOOOOO?
+                    if (element["nameplate"]["ManufacturerName"].search(manufacturerName) !== -1) {
+                        newAssetArray.push(element)
+                    }
+                }
+            })
+            if (newAssetArray.length === 0) {
+                //Error Handling
+                alert("No results found");
+            } else {
+                window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
+                index.render(<Main/>);
+            }
+        }
     }
 
     //Welches objekt ist am neuesten. Nach Alter sortieren.
@@ -79,7 +106,8 @@ class Filter extends React.Component {
                         <Dropdown.Item href="#/action-3">Jahr blablab</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-                <Dropdown className="mx-2" autoClose="outside" variant="light" align="end">
+                <Dropdown className="mx-2" autoClose="outside" variant="light" align="end"
+                          onClick={this.filterManufactureName}>
                     <Dropdown.Toggle id="dropdown-autoclose-outside">
                         Hersteller
                     </Dropdown.Toggle>
@@ -98,13 +126,15 @@ class Filter extends React.Component {
                                 <button
                                     type="submit"
                                     className="btn btn-link mx-2 text-nowrap"
-                                    onClick={this.addServer}
+                                    onClick={this.filterForManufacturerName}
                                 >
                                     Search
                                 </button>
                             </form>
                         </Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Hersteller 1 blablab</Dropdown.Item>
+                        <div className={"form-group"}>
+                            <select className={"form-control"} id={"manufacturerNameDropDown"} onChange={this.filterForManufacturerName}></select>
+                        </div>
                     </Dropdown.Menu>
                 </Dropdown>
                 {/* Suchfeldleiste */}
@@ -128,6 +158,7 @@ class Filter extends React.Component {
                     </button>
                 </form>
             </div>
+
         );
     }
 }

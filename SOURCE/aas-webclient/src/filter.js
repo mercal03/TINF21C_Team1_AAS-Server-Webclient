@@ -91,6 +91,7 @@ class Filter extends React.Component {
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
             index.render(<Main/>);
         }
+        document.getElementById("manufacturerNameSearchField").value ='';
     }
 
     //Welches objekt ist am neuesten. Nach Alter sortieren.

@@ -30,7 +30,7 @@ class Filter extends React.Component {
         //tbd
     }
 
-    filterManufactureName() {
+    getManufactureName() {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
         shells.forEach((element) => {
@@ -53,13 +53,17 @@ class Filter extends React.Component {
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
         let manufacturerNameDropDown = document.getElementById("manufacturerNameDropDown").value;
         if (manufacturerNameDropDown) {
-            shells.forEach((element) => {
-                if (element["nameplate"]) { // Macht für mich keinen Sinn: MARCEEEEEELLLLLLL? WIESOOOOOOOOOO?
-                    if (element["nameplate"]["ManufacturerName"].search(manufacturerNameDropDown) !== -1) {
-                        newAssetArray.push(element)
+            if (manufacturerNameDropDown === "Alle") {
+                newAssetArray = shells;
+            } else {
+                shells.forEach((element) => {
+                    if (element["nameplate"]) { // Macht für mich keinen Sinn: MARCEEEEEELLLLLLL? WIESOOOOOOOOOO?
+                        if (element["nameplate"]["ManufacturerName"].search(manufacturerNameDropDown) !== -1) {
+                            newAssetArray.push(element)
+                        }
                     }
-                }
-            })
+                })
+            }
         }
         if (newAssetArray.length === 0) {
             //Error Handling
@@ -70,12 +74,12 @@ class Filter extends React.Component {
         }
     }
 
-    searchForManufacturerName(){
+    searchForManufacturerName() {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
         let manufacturerNameSearchField = document.getElementById("manufacturerNameSearchField").value.toLowerCase();
 
-        if(manufacturerNameSearchField){
+        if (manufacturerNameSearchField) {
             shells.forEach((element) => {
                 if (element["nameplate"]) { // Macht für mich keinen Sinn: MARCEEEEEELLLLLLL? WIESOOOOOOOOOO?
                     if (element["nameplate"]["ManufacturerName"].toLowerCase().search(manufacturerNameSearchField) !== -1) {
@@ -91,7 +95,31 @@ class Filter extends React.Component {
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
             index.render(<Main/>);
         }
-        document.getElementById("manufacturerNameSearchField").value ='';
+        document.getElementById("manufacturerNameSearchField").value = '';
+    }
+
+    sortAsYear() {
+        let upOrDown = document.getElementById("sortByYear").value;
+        let newAssetArray = [];
+        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+
+
+        shells.forEach((element) => {
+            if(element["nameplate"]) {
+                if (element["nameplate"]["YearOfConstruction"]) {
+                    newAssetArray.push(element["nameplate"]["YearOfConstruction"]);
+                }
+            }
+        })
+        console.table(newAssetArray)
+
+        /*if (newAssetArray.length === 0) {
+            //Error Handling
+            alert("No results found");
+        } else {
+            window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
+            index.render(<Main/>);
+        }*/
     }
 
     //Welches objekt ist am neuesten. Nach Alter sortieren.
@@ -106,31 +134,14 @@ class Filter extends React.Component {
                         Jahr
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item>
-                            <form
-                                className="mx-2 d-flex flex-row"
-                                onSubmit={(event) => event.preventDefault()}
-                            >
-                                <input
-                                    id="blafwsefbla"
-                                    type="text"
-                                    className="form-control form-control-dark  w-auto"
-                                    placeholder="Jahr..."
-                                ></input>
-                                <button
-                                    type="submit"
-                                    className="btn btn-link mx-2 text-nowrap"
-                                    onClick={this.addServer}
-                                >
-                                    Search
-                                </button>
-                            </form>
-                        </Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Jahr blablab</Dropdown.Item>
+                        <select id={"sortByYear"} onChange={this.sortAsYear}>
+                            <option value="up">aufsteigend</option>
+                            <option value="down">absteigend</option>
+                        </select>
                     </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown className="mx-2" autoClose="outside" variant="light" align="end"
-                          onClick={this.filterManufactureName}>
+                          onClick={this.getManufactureName}>
                     <Dropdown.Toggle id="dropdown-autoclose-outside">
                         Hersteller
                     </Dropdown.Toggle>
@@ -156,7 +167,8 @@ class Filter extends React.Component {
                             </form>
                         </Dropdown.Item>
                         <div className={"form-group"}>
-                            <select className={"form-control"} id={"manufacturerNameDropDown"} onChange={this.filterForManufacturerName}>
+                            <select className={"form-control"} id={"manufacturerNameDropDown"}
+                                    onChange={this.filterForManufacturerName}>
                             </select>
                         </div>
                     </Dropdown.Menu>

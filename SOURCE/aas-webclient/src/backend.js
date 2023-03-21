@@ -16,7 +16,11 @@ async function getData(url) {
                 console.log(response, err);
             })
         }).catch(err => {
-            console.log(err);
+                window.sessionStorage.clear();
+                document.getElementById("server-url").value = "";
+                document.getElementById("addServerbtn").innerHTML = "Add Server";
+                index.render(<Main/>);
+                alert("Server nicht erreichbar");
         });
 }
 
@@ -136,7 +140,7 @@ async function getFullShellData() {
         window.sessionStorage.setItem("shells", JSON.stringify(returnData));
         window.sessionStorage.setItem("content", JSON.stringify(returnData));
         index.render(<Main/>);
-    });
+    }).catch(err => alert(err));
 }
 
 export {getFullShellData}

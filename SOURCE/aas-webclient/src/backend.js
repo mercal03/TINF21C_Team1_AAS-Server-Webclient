@@ -16,11 +16,11 @@ async function getData(url) {
                 console.log(response, err);
             })
         }).catch(err => {
-                window.sessionStorage.clear();
-                document.getElementById("server-url").value = "";
-                document.getElementById("addServerbtn").innerHTML = "Add Server";
-                index.render(<Main/>);
-                alert("Server nicht erreichbar");
+            window.sessionStorage.clear();
+            document.getElementById("server-url").value = "";
+            document.getElementById("addServerbtn").innerHTML = "Add Server";
+            index.render(<Main/>);
+            alert("Server nicht erreichbar");
         });
 }
 
@@ -34,22 +34,32 @@ async function findSubmodels(url, category) {
                 return false;
             }
         }).map(element => {
-            return {
-                idShort: element.idShort,
-                id: element.id,
-                idEncoded: btoa(element.id),
-                ...extractData(element.submodelElements, element.id),
+            if (Object.keys(element).includes("identification")) {
+                let id = element.identification.id;
+                return {
+                    idShort: element.idShort,
+                    id: id,
+                    idEncoded: btoa(id),
+                    ...extractData(element.submodelElements, id),
+                }
+            } else {
+                return {
+                    idShort: element.idShort,
+                    id: element.id,
+                    idEncoded: btoa(element.id),
+                    ...extractDataLocal(element.submodelElements, element.id),
+                }
             }
         });
     });
 }
 
 function getLangString(json) {
-    if ("langStrings" in json){
+    if ("langStrings" in json) {
         let langStrings = json.langStrings
-        for (let langPref of ["de", "en"]){
+        for (let langPref of ["de", "en"]) {
             for (let langString of langStrings) {
-                if(langString.language === langPref){
+                if (langString.language === langPref) {
                     return langString.text;
                 }
             }
@@ -58,7 +68,7 @@ function getLangString(json) {
     return "";
 }
 
-function extractData(element, id, path = "") {
+function extractDataLocal(element, id, path = "") {
     let url = window.sessionStorage.getItem("url");
     url += "submodels/" + btoa(id) + "/submodelelements";
     let returnObject = {};
@@ -67,7 +77,7 @@ function extractData(element, id, path = "") {
         if (nameplateElement.modelType === "MultiLanguageProperty") {
             returnObject[nameplateElement.idShort] = getLangString(nameplateElement.value);
         } else if (nameplateElement.modelType === "SubmodelElementCollection") {
-            returnObject[nameplateElement.idShort] = extractData(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
+            returnObject[nameplateElement.idShort] = extractDataLocal(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
         } else if (nameplateElement.modelType === "Property") {
             returnObject[nameplateElement.idShort] = nameplateElement.value;
         } else if (nameplateElement.modelType === "File") {
@@ -78,15 +88,44 @@ function extractData(element, id, path = "") {
     return returnObject;
 }
 
-function searchForKey(json){
-    let regex = /[pP]roductImage\d*/;
+function extractData(element, id, path = "") {
+    let url = window.sessionStorage.getItem("url");
+    url += "submodels/" + btoa(id) + "/submodelelements";
+    let returnObject = {};
+
+    for (let nameplateElement of element) {
+        if (nameplateElement.modelType.name === "MultiLanguageProperty") {
+            returnObject[nameplateElement.idShort] = getLangString(nameplateElement.value);
+        } else if (nameplateElement.modelType.name === "SubmodelElementCollection") {
+            returnObject[nameplateElement.idShort] = extractData(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
+        } else if (nameplateElement.modelType.name === "Property") {
+            returnObject[nameplateElement.idShort] = nameplateElement.value;
+        } else if (nameplateElement.modelType.name === "File") {
+            returnObject["FilePath"] = url + "/" + path + "." + nameplateElement.idShort + "/attachment";
+            returnObject[nameplateElement.idShort] = nameplateElement.value;
+        }
+    }
+    return returnObject;
+}
+
+function searchForKeyLocal(json, regex) {
     let returnList = [];
-    if(typeof json === "object") {
+    if (typeof json === "object") {
         for (let key in json) {
             if (regex.test(key) && json["FilePath"]) {
                 returnList.push(json["FilePath"]);
             }
-            returnList = returnList.concat(searchForKey(json[key], regex));
+            returnList = returnList.concat(searchForKeyLocal(json[key], regex));
+        }
+    }
+    return returnList;
+}
+
+function searchForKey(json, regex) {
+    let returnList = [];
+    for (let key in json) {
+        if (regex.test(key) && json["FilePath"]) {
+            returnList.push(json["FilePath"]);
         }
     }
     return returnList;
@@ -94,7 +133,7 @@ function searchForKey(json){
 
 async function getFullShellData() {
     let url = window.sessionStorage.getItem("url");
-    let fullnameplateData = null, fulltechnicalData = null;
+    let fullnameplateData = null, fulltechnicalData = null, fullidentificationData = null;
     if (!url.endsWith("/")) {
         url += "/";
         window.sessionStorage.setItem("url", url);
@@ -107,10 +146,19 @@ async function getFullShellData() {
         await findSubmodels(url, "TechnicalData").then(response => fulltechnicalData = response);
         console.log(fulltechnicalData);
     }
+    if (fullidentificationData === null) {
+        await findSubmodels(url, "Identification").then(response => fullidentificationData = response);
+        console.log(fullidentificationData);
+    }
 
     getData(url + "shells").then(response => {
         let returnData = response.map(element => {
-            let id = element["id"];
+            let id;
+            if (Object.keys(element).includes("identification")) {
+                id = element.identification.id;
+            } else {
+                id = element.id;
+            }
 
             let nameplateData = fullnameplateData.find(item => {
                 return element.submodels.find(submodel => {
@@ -124,7 +172,18 @@ async function getFullShellData() {
                 });
             });
 
-            let images = technicalData ? searchForKey(technicalData) : null;
+            let identificationData = fullidentificationData.find(item => {
+                return element.submodels.find(submodel => {
+                    return item.id === submodel.keys[0].value;
+                })
+            });
+
+            let images;
+            if (Object.keys(element).includes("identification")) {
+                images = technicalData ? searchForKey(identificationData, /TypThumbnail/) : null;
+            } else {
+                images = technicalData ? searchForKeyLocal(technicalData, /[pP]roductImage\d*/) : null;
+            }
 
             return {
                 idShort: element.idShort,

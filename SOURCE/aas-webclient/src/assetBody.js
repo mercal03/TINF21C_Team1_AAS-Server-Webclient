@@ -3,7 +3,7 @@ import React from "react";
 class AssetBody extends React.Component {
     render() {
         return (
-            <table>
+            <table className={"m-1 table-bordered"}>
                 <tbody id={"assetBodyTable"}>
                 </tbody>
             </table>

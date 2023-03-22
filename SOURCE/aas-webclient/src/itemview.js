@@ -9,7 +9,7 @@ class ItemView extends React.Component {
             let shells = JSON.parse(window.sessionStorage.getItem("content"));
             if (shells !== null) {
                 return (
-                    <div className="p-2 col-4 bg-primary-subtle">
+                    <div className="p-2 col-4 bg-primary-subtle overflow-auto">
                         <h3>Assets</h3>
                         {shells.map(shell => {
                             return <Item key={shell.idShort} shell={shell}/>

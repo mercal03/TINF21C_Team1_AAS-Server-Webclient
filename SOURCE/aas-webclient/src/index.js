@@ -9,7 +9,7 @@ export class Main extends React.Component {
         return (
             <div className='vh-100 d-flex flex-column'>
                 <Header/>
-                <main className='d-flex flex-row flex-fill'>
+                <main className='d-flex flex-row flex-fill overflow-hidden' style={{marginTop: "85px"}}>
                     <ItemView/>
                     <AssetBody/>
                 </main>

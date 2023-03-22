@@ -5,20 +5,21 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 class ServerMenu extends React.Component {
     state = {
-        serverlist: ["http://localhost:5001", "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org"],
+        serverlist: ["https://admin-shell-io.com/5001", "http://localhost:5001", "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org"],
     }
 
     changeServer() {
-        let mode = document.getElementById("addServerbtn").innerHTML; //Funktioniert nicht ganz
+        let mode = document.getElementById("addServerbtn").innerHTML;
         window.sessionStorage.clear();
-        if (mode === "Add Server") {
-            document.getElementById("addServerbtn").innerHTML = "Delete Server"
+        let prevUrl = window.sessionStorage.getItem("url");
+        if (mode === "Add Server" || prevUrl !== document.getElementById("server-url").value) {
+            document.getElementById("addServerbtn").innerHTML = "Delete Server";
             index.render(<Main/>);
             let url = document.getElementById("server-url").value;
             window.sessionStorage.setItem("url", url);
             getFullShellData();
         } else {
-            document.getElementById("addServerbtn").innerHTML = "Add Server"
+            document.getElementById("addServerbtn").innerHTML = "Add Server";
             document.getElementById("server-url").value = "";
             index.render(<Main/>);
         }

@@ -3,10 +3,13 @@ import React from "react";
 class AssetBody extends React.Component {
     render() {
         return (
-            <table className={"m-1 table-bordered"}>
-                <tbody id={"assetBodyTable"}>
-                </tbody>
-            </table>
+            <div className="mx-3 py-2 overflow-auto">
+                <h3>*Insert Asset Name here*</h3>
+                <table className={"table"}>
+                    <tbody id={"assetBodyTable"}>
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }

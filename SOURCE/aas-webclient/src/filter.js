@@ -134,7 +134,7 @@ class Filter extends React.Component {
                         Jahr
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <select id={"sortByYear"} onChange={this.sortAsYear}>
+                        <select id={"sortByYear"} className="form-select" onChange={this.sortAsYear}>
                             <option value="up">aufsteigend</option>
                             <option value="down">absteigend</option>
                         </select>

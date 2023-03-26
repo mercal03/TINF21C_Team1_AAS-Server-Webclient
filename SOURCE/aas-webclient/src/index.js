@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Header from "./header"
-import "./bootstrap/bootstrap.rtl.min.css"
+import Header from "./header";
+import "./bootstrap/bootstrap.rtl.min.css";
+import "./style.css";
 import ItemView from "./itemview";
 import AssetBody from "./assetBody";
 export class Main extends React.Component {

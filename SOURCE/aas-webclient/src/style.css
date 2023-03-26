@@ -1,4 +1,4 @@
-#filter {
+/* #filter {
     position: fixed;
     width: 200px;
     height: 100%;
@@ -51,4 +51,22 @@ h1 {
 
 #serverinfo p {
     margin-right: 10px;
+} */
+
+.item {cursor: pointer;}
+
+.item:hover{
+    filter: brightness(0.96);
+}
+
+#assetBodyTable td{
+    word-break: break-word;
+}
+
+#assetBodyTable tr :nth-child(1){
+    word-break: normal;
+}
+
+#assetBodyTable tr:nth-child(1){
+    border-bottom: solid black 1px;
 }

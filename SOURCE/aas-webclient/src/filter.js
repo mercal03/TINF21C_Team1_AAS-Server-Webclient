@@ -11,6 +11,9 @@ class Filter extends React.Component {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
 
+        document.getElementById("searchInputStringBtn").style.display="none"
+        document.getElementById("searchInputStringClearBtn").style.display="block"
+
         shells.forEach((element) => {
             if (element["idShort"].toLowerCase().search(searchInput) !== -1) {
                 // Abfrage ob Suchstring enthalten ist
@@ -20,7 +23,8 @@ class Filter extends React.Component {
         if (newAssetArray.length === 0) {
             //Error Handling
             alert("No results found");
-        } else {
+        }
+        else {
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
             index.render(<Main/>);
         }
@@ -34,7 +38,7 @@ class Filter extends React.Component {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
         shells.forEach((element) => {
-            if (element["nameplate"]) { // Macht für mich keinen Sinn: MARCEEEEEELLLLLLL? WIESOOOOOOOOOO?
+            if (element["nameplate"]) {
                 if (element["nameplate"]["ManufacturerName"])
                     newAssetArray.push(element["nameplate"]["ManufacturerName"]);
             }
@@ -57,7 +61,7 @@ class Filter extends React.Component {
                 newAssetArray = shells;
             } else {
                 shells.forEach((element) => {
-                    if (element["nameplate"]) { // Macht für mich keinen Sinn: MARCEEEEEELLLLLLL? WIESOOOOOOOOOO?
+                    if (element["nameplate"]) {
                         if (element["nameplate"]["ManufacturerName"].search(manufacturerNameDropDown) !== -1) {
                             newAssetArray.push(element)
                         }
@@ -122,7 +126,10 @@ class Filter extends React.Component {
         }*/
     }
 
-    //Welches objekt ist am neuesten. Nach Alter sortieren.
+/*    sortByDateDescanding(a, b)
+{
+    return  b[][] - a[][]
+} */   //Welches objekt ist am neuesten. Nach Alter sortieren.
     //Hersteller filtern
     //Jahr
 
@@ -186,11 +193,17 @@ class Filter extends React.Component {
                         aria-label="Search"
                     />
                     <button
+                        id={"searchInputStringBtn"}
                         className="btn btn-primary my-2 my-sm-0"
                         type="submit"
                         onClick={this.filterForName}
                     >
                         Search
+                    </button>
+                    <button
+                        id={"searchInputStringClearBtn"}
+                        className="btn btn-primary my-2 my-sm-0">
+                        Clear
                     </button>
                 </form>
             </div>

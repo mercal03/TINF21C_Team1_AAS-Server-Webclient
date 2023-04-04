@@ -11,9 +11,6 @@ class Filter extends React.Component {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
 
-        document.getElementById("searchInputStringBtn").style.display="none"
-        document.getElementById("searchInputStringClearBtn").style.display="block"
-
         shells.forEach((element) => {
             if (element["idShort"].toLowerCase().search(searchInput) !== -1) {
                 // Abfrage ob Suchstring enthalten ist
@@ -28,10 +25,6 @@ class Filter extends React.Component {
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
             index.render(<Main/>);
         }
-    }
-
-    filterOptions() {
-        //tbd
     }
 
     getManufactureName() {
@@ -126,6 +119,19 @@ class Filter extends React.Component {
         }*/
     }
 
+    deleteSearchInput(){
+        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+        document.getElementById("searchField").value = ""
+        if (shells.length === 0) {
+            //Error Handling
+            alert("Cannot Clear!");
+        }
+        else {
+            window.sessionStorage.setItem("content", JSON.stringify(shells));
+            index.render(<Main/>);
+        }
+}
+
 /*    sortByDateDescanding(a, b)
 {
     return  b[][] - a[][]
@@ -192,6 +198,7 @@ class Filter extends React.Component {
                         placeholder="Search"
                         aria-label="Search"
                     />
+                    <input type="reset" value="X" alt="Clear the search form" onClick={this.deleteSearchInput}/>
                     <button
                         id={"searchInputStringBtn"}
                         className="btn btn-primary my-2 my-sm-0"
@@ -199,11 +206,6 @@ class Filter extends React.Component {
                         onClick={this.filterForName}
                     >
                         Search
-                    </button>
-                    <button
-                        id={"searchInputStringClearBtn"}
-                        className="btn btn-primary my-2 my-sm-0">
-                        Clear
                     </button>
                 </form>
             </div>

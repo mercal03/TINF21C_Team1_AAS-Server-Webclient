@@ -34,7 +34,7 @@ async function findSubmodels(url, category) {
                 return false;
             }
         }).map(element => {
-            if (Object.keys(element).includes("identification")) {
+            if (Object.keys(element).includes("identification")) { //V1
                 let id = element.identification.id;
                 return {
                     idShort: element.idShort,
@@ -42,12 +42,12 @@ async function findSubmodels(url, category) {
                     idEncoded: btoa(id),
                     ...extractData(element.submodelElements, id),
                 }
-            } else {
+            } else { //V3
                 return {
                     idShort: element.idShort,
                     id: element.id,
                     idEncoded: btoa(element.id),
-                    ...extractDataLocal(element.submodelElements, element.id),
+                    ...extractDatav3(element.submodelElements, element.id),
                 }
             }
         });
@@ -68,7 +68,7 @@ function getLangString(json) {
     return "";
 }
 
-function extractDataLocal(element, id, path = "") {
+function extractDatav3(element, id, path = "") {
     let url = window.sessionStorage.getItem("url");
     url += "submodels/" + btoa(id) + "/submodelelements";
     let returnObject = {};
@@ -77,7 +77,7 @@ function extractDataLocal(element, id, path = "") {
         if (nameplateElement.modelType === "MultiLanguageProperty") {
             returnObject[nameplateElement.idShort] = getLangString(nameplateElement.value);
         } else if (nameplateElement.modelType === "SubmodelElementCollection") {
-            returnObject[nameplateElement.idShort] = extractDataLocal(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
+            returnObject[nameplateElement.idShort] = extractDatav3(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
         } else if (nameplateElement.modelType === "Property") {
             returnObject[nameplateElement.idShort] = nameplateElement.value;
         } else if (nameplateElement.modelType === "File") {
@@ -108,14 +108,14 @@ function extractData(element, id, path = "") {
     return returnObject;
 }
 
-function searchForKeyLocal(json, regex) {
+function searchForKeyv3(json, regex) {
     let returnList = [];
     if (typeof json === "object") {
         for (let key in json) {
             if (regex.test(key) && json["FilePath"]) {
                 returnList.push(json["FilePath"]);
             }
-            returnList = returnList.concat(searchForKeyLocal(json[key], regex));
+            returnList = returnList.concat(searchForKeyv3(json[key], regex));
         }
     }
     return returnList;
@@ -155,34 +155,36 @@ async function getFullShellData() {
         let returnData = response.map(element => {
             let id;
             if (Object.keys(element).includes("identification")) {
+                console.log("Server is V1");
                 id = element.identification.id;
             } else {
+                console.log("Server is V3");
                 id = element.id;
             }
 
             let nameplateData = fullnameplateData.find(item => {
-                return element.submodels.find(submodel => {
-                    return item.id === submodel.keys[0].value;
-                });
+                return element.submodels ? element.submodels.find(submodel => {
+                    return submodel.keys[0] ? item.id === submodel.keys[0].value : false;
+                }) : false;
             });
 
             let technicalData = fulltechnicalData.find(item => {
-                return element.submodels.find(submodel => {
-                    return item.id === submodel.keys[0].value;
-                });
+                return element.submodels ? element.submodels.find(submodel => {
+                    return submodel.keys[0] ? item.id === submodel.keys[0].value : false;
+                }) : false;
             });
 
             let identificationData = fullidentificationData.find(item => {
-                return element.submodels.find(submodel => {
-                    return item.id === submodel.keys[0].value;
-                })
+                return element.submodels ? element.submodels.find(submodel => {
+                    return submodel.keys[0] ? item.id === submodel.keys[0].value : false;
+                }) : false;
             });
 
             let images;
             if (Object.keys(element).includes("identification")) {
-                images = technicalData ? searchForKey(identificationData, /TypThumbnail/) : null;
+                images = identificationData ? searchForKey(identificationData, /TypThumbnail/) : null;
             } else {
-                images = technicalData ? searchForKeyLocal(technicalData, /[pP]roductImage\d*/) : null;
+                images = technicalData ? searchForKeyv3(technicalData, /[pP]roductImage\d*/) : null;
             }
 
             return {

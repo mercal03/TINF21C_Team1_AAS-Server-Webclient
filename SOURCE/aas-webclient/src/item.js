@@ -8,7 +8,6 @@ class Item extends React.Component {
     openAsset = () => {
         let inner = buildBody(this.props.shell);
         inner = inner.flat(Infinity);
-        console.log(inner);
         for (let i = 1; i < inner.length; i++) {
             inner[0] += inner[i];
         }

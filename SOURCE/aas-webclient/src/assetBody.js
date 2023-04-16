@@ -1,34 +1,28 @@
 import React from "react";
 
 class AssetBody extends React.Component {
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("Body update");
+    }
+
     render() {
         return (
             <div className="mx-3 py-2 overflow-auto">
-                <h3>*Insert Asset Name here*</h3>
-                <table className={"table"}>
-                    <tbody id={"assetBodyTable"}>
-                    </tbody>
-                </table>
+                <h2>ASSET NAME</h2>
+                <div className={"d-flex flex-column"}>
+                    <div className={"d-inline-flex"}>
+                        <img src={""} alt={"PAIN"}/>
+                        <div>wichtige news</div>
+                    </div>
+                    <div className={"d-inline-flex"}>
+                        <p>1</p>
+                        <p>2</p>
+                    </div>
+                </div>
             </div>
         );
     }
-}
-
-export function buildBody(json) {
-    let value = Object.keys(json).map(key => {
-        if (typeof json[key.toString()] === "string" || json[key.toString()] === null) {
-            let data = json[key.toString()];
-            let value = data ? data : "undefined";
-            return "<tr><td>" + key + "</td><td>" + value + "</td></tr>"
-        } else if (key === "images") {
-            let data = json[key.toString()][0];
-            let value = data ? data : "undefined";
-            return "<tr><td>" + key + "</td><td>" + value + "</td></tr>"
-        } else {
-            return buildBody(json[key.toString()]);
-        }
-    });
-    return value;
 }
 
 export default AssetBody;

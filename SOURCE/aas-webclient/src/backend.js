@@ -193,8 +193,9 @@ async function getFullShellData() {
                 idEncoded: btoa(id),
                 nameplateId: nameplateData ? nameplateData.id : null,
                 nameplateIdEncoded: nameplateData ? nameplateData.idEncoded : null,
-                images: images,
+                image: images ? images[0] : null,
                 nameplate: nameplateData ? nameplateData : null,
+                identification: identificationData ? identificationData : null,
             }
         });
         console.log(returnData);

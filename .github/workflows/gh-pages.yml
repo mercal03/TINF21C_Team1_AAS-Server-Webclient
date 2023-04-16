@@ -14,7 +14,7 @@ jobs:
 
       - name: Give Permissions to shell script
         working-directory: SOURCE/aas-webclient
-        run: chmod +x ./version-info.sh
+        #run: chmod +x ./version-info.sh
 
       - name: Install and Build
         working-directory: SOURCE/aas-weblient

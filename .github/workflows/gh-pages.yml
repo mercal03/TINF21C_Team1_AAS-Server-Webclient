@@ -19,6 +19,7 @@ jobs:
       - name: Install and Build
         working-directory: SOURCE/aas-weblient
         run: |
+          npm ci
           npm run build
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4

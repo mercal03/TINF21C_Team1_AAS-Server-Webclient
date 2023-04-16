@@ -20,7 +20,7 @@ jobs:
         run: chmod +x ./version-info.sh
 
       - name: Install and Build
-        working-directory: SOURCE/aas-weblient
+        working-directory: SOURCE/aas-webclient
         run: |
           npm ci
           npm run build

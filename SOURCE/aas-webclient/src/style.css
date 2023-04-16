@@ -1,3 +1,4 @@
+
 .item {cursor: pointer;}
 
 #assetBodyTable td{
@@ -15,4 +16,73 @@
 .version{
     font-size: large;
     margin-left: 0.6rem;
+}
+
+.my-dropdown button{
+    background-color: rgba(255, 255, 255, 0);
+    color: black;
+    border-radius: 0;
+    border: none;
+}
+
+.my-dropdown button:active,
+.my-dropdown button:hover,
+.my-dropdown button:checked,
+.my-dropdown button:first-child:active{
+    background-color: rgba(255, 255, 255, 0);
+    color: black;
+}
+
+.btn-check:checked + .btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check) + .btn:active{
+    background-color: transparent;
+    color: black;
+    outline: none;
+    border: none;
+}
+
+
+
+#searchField:focus,
+#searchField:active{
+    outline: none !important;
+    border: none !important;
+}
+
+.my-search-button{
+    outline:none;
+    border: none;
+    background-color: transparent;
+    padding: 0 0.7rem;
+}
+
+.search-bar-container{
+    border-radius: 1rem;
+}
+
+.asset-image{
+    width: 15rem;
+}
+
+.image-container{
+    height: fit-content;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0px 1px 4px -1px rgba(140,140,140,1);
+}
+
+.key{
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.value{
+    word-break: break-all;
+}
+
+.asset-table{
+    width: 100%;
+}
+
+.accordion-button::after{
+    margin-right: 0;
 }

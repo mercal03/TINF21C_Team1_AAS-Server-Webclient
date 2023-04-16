@@ -9,7 +9,7 @@ class ItemView extends React.Component {
             let shells = JSON.parse(window.sessionStorage.getItem("content"));
             if (shells !== null) {
                 return (
-                    <div className="m-2 p-2 col-4 rounded overflow-auto list-group">
+                    <div className="m-2 p-2 col-4 overflow-auto list-group">
                         <h3>Select Asset</h3>
                         {shells.map(shell => {
                             return <Item key={shell.idShort} shell={shell}/>

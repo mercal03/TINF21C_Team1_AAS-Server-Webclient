@@ -23,14 +23,30 @@ class AssetBody extends React.Component {
                     <div className={"d-flex flex-column"}>
                         <div className={"d-inline-flex"}>
                             <img src={shell.image} alt={""}/>
-                            <div>Id: {shell.id}</div>
+                            <div>
+                                <table>
+                                    <tbody>
+                                    {Object.entries(shell).map(([key, value]) => {
+                                        if (typeof value !== "object") {
+                                            return (
+                                                <tr>
+                                                    <td>{key}</td>
+                                                    <td>{value}</td>
+                                                </tr>
+                                            );
+                                        }
+                                    })}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div className={"d-inline-flex"}>
                             <div className={"d-flex flex-column"}>
                                 {Object.entries(shell).map(([key, value]) => {
                                     if (typeof value === "object" && shell[key] !== null) {
                                         return (
-                                            <button onClick={this.changeContent}>{key[0].toUpperCase()}{key.substring(1, key.length)}</button>
+                                            <button
+                                                onClick={this.changeContent}>{key[0].toUpperCase()}{key.substring(1, key.length)}</button>
                                         );
                                     }
                                 })}
@@ -68,7 +84,22 @@ const buildBody = (shell) => {
                             return (
                                 <tr>
                                     <td>{key}</td>
-                                    <td>Muss noch gemacht werden!!!</td>
+                                    <td>
+                                        <div className="accordion" id="accordionExample">
+                                            <div className="accordion-item">
+                                                <h2 className="accordion-header" id="headingOne">
+                                                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${key}`} aria-expanded="true" aria-controls="collapseOne">
+                                                        {key}
+                                                    </button>
+                                                </h2>
+                                                <div id={`${key}`} className="accordion-collapse collapse" aria-labelledby="headingOne">
+                                                    <div className="accordion-body">
+                                                        Body
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             );
                         }

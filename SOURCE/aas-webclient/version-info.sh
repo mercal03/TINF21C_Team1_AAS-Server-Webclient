@@ -1,0 +1,1 @@
+REACTBUILDVERSION=`TZ=GMT-1 date +%Y-%m-%d"-"%H:%M:%S` && GITCOMMITHASH=`git rev-parse --short HEAD` && sed -i -- 's/%REACTBUILDVERSION%/'$REACTBUILDVERSION'/g' build/index.html && sed -i -- 's/%GITCOMMITHASH%/'$GITCOMMITHASH'/g' build/index.html && echo React Build Version = $REACTBUILDVERSION && echo Git Commit Hash = $GITCOMMITHASH

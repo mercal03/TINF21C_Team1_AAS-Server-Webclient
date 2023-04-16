@@ -52,7 +52,11 @@ class AssetBody extends React.Component {
                                 })}
                             </div>
                             <div id={"bodyContent"}>
-                                {buildBody(shell)}
+                                {Object.entries(shell).map(([key, value]) => {
+                                    if (typeof value === "object") {
+                                        return buildBody(shell[key], key);
+                                    }
+                                })}
                             </div>
                         </div>
                     </div>
@@ -66,49 +70,52 @@ class AssetBody extends React.Component {
     }
 }
 
-const buildBody = (shell) => {
-    return Object.entries(shell).map(([key, value]) => {
-        if (typeof value === "object") {
-            return (
-                <table id={key} hidden={true}>
-                    <tbody>
-                    {shell[key] ? Object.entries(shell[key]).map(([key, value]) => {
-                        if (typeof value !== "object") {
-                            return (
-                                <tr>
-                                    <td>{key}</td>
-                                    <td>{value}</td>
-                                </tr>
-                            );
-                        } else {
-                            return (
-                                <tr>
-                                    <td>{key}</td>
-                                    <td>
-                                        <div className="accordion" id="accordionExample">
-                                            <div className="accordion-item">
-                                                <h2 className="accordion-header" id="headingOne">
-                                                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${key}`} aria-expanded="true" aria-controls="collapseOne">
-                                                        {key}
-                                                    </button>
-                                                </h2>
-                                                <div id={`${key}`} className="accordion-collapse collapse" aria-labelledby="headingOne">
-                                                    <div className="accordion-body">
-                                                        Body
-                                                    </div>
+const buildBody = (json, id="") => {
+    return (
+        <table id={id}>
+            <tbody>
+            {json ? Object.entries(json).map(([key, value]) => {
+                if (typeof value === "object") {
+                    if (Object.keys(json[key]).length > 0) {
+                        return (
+                            <tr>
+                                <td colSpan={2}>
+                                    <div className="accordion" id="accordionExample">
+                                        <div className="accordion-item">
+                                            <h2 className="accordion-header" id="headingOne">
+                                                <button className="accordion-button collapsed"
+                                                        type="button" data-bs-toggle="collapse"
+                                                        data-bs-target={`#${key}`}
+                                                        aria-expanded="true"
+                                                        aria-controls="collapseOne">
+                                                    {key}
+                                                </button>
+                                            </h2>
+                                            <div id={`${key}`}
+                                                 className="accordion-collapse collapse"
+                                                 aria-labelledby="headingOne">
+                                                <div className="accordion-body">
+                                                    {buildBody(json[key])}
                                                 </div>
                                             </div>
                                         </div>
-                                    </td>
-                                </tr>
-                            );
-                        }
-                    }) : <tr></tr>}
-                    </tbody>
-                </table>
-            );
-        }
-    })
+                                    </div>
+                                </td>
+                            </tr>
+                        );
+                    }
+                } else {
+                    return (
+                        <tr>
+                            <td>{key}</td>
+                            <td>{value}</td>
+                        </tr>
+                    );
+                }
+            }) : <tr></tr>}
+            </tbody>
+        </table>
+    );
 }
 
 export default AssetBody;

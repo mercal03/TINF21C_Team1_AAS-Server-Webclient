@@ -28,7 +28,7 @@ class AssetBody extends React.Component {
                 <img src={shell.image} alt={""} className="asset-image" />
               </div>
 
-              <div className="mx-4">
+              <div className="">
                 <table>
                   <tbody>
                     {Object.entries(shell).map(([key, value]) => {

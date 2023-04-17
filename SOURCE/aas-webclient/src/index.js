@@ -5,12 +5,15 @@ import "./bootstrap/bootstrap.rtl.min.css";
 import "./style.css";
 import ItemView from "./itemview";
 import AssetBody from "./assetBody";
+import Filter from "./filter";
+
 export class Main extends React.Component {
     render() {
         return (
             <div className='vh-100 d-flex flex-column'>
                 <Header/>
-                <main className='d-flex flex-row flex-fill overflow-hidden' style={{marginTop: "85px"}}>
+                <Filter/>
+                <main className='d-flex flex-row flex-fill overflow-hidden'>
                     <ItemView/>
                     <AssetBody/>
                 </main>

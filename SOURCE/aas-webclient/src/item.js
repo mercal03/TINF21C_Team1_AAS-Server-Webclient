@@ -1,27 +1,19 @@
 import React from 'react';
-import {Button} from "react-bootstrap";
-import {buildBody} from "./assetBody";
 import "./style.css";
+import {index, Main} from "./index";
 
 class Item extends React.Component {
 
     openAsset = () => {
-        let inner = buildBody(this.props.shell);
-        inner = inner.flat(Infinity);
-        for (let i = 1; i < inner.length; i++) {
-            inner[0] += inner[i];
-        }
-        let headerrow = "<thead><tr><th>key</th><th>value</th></tr></thead>"
-        inner[0] = headerrow + inner[0];
-        document.getElementById("assetBodyTable").innerHTML = inner[0];
+        window.sessionStorage.setItem("shellBody", JSON.stringify(this.props.shell));
+        index.render(<Main/>);
     }
-
     render() {
         let name = this.props.shell.idShort;
-        let image = this.props.shell.images ? this.props.shell.images[0] : "";
+        let image = this.props.shell.image ? this.props.shell.image : "";
         return (
-            <div onClick={this.openAsset} className={"item bg-light rounded p-2 my-2 d-sm-flex justify-content-between align-items-center"}>
-                <img style={{maxHeight: "50px"}} src={image} alt={"Icon"}/>
+            <div onClick={this.openAsset} className={"item shadow-sm rounded p-2 my-2 d-sm-flex justify-content-between align-items-center list-group-item-action list-group-item border-top"}>
+                <img style={{maxHeight: "50px"}} src={image} alt={""}/>
                 <div>
                    {name}
                 </div>

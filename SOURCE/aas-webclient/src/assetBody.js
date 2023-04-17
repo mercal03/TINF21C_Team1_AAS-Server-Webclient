@@ -25,10 +25,10 @@ class AssetBody extends React.Component {
           <div className={"d-flex flex-column"}>
             <div className={"d-flex flex-row"}>
               <div className="image-container">
-                <img src={shell.image} alt={""} className="asset-image" />
+                <img src={(shell.image==null)? 'https://de.ingrammicro.com/_layouts/images/CSDefaultSite/common/no-image-lg.png': shell.image} alt={""} className="asset-image" />
               </div>
 
-              <div className="">
+              <div>
                 <table>
                   <tbody>
                     {Object.entries(shell).map(([key, value]) => {
@@ -48,15 +48,17 @@ class AssetBody extends React.Component {
                 </table>
               </div>
             </div>
-            <div className={"d-flex flex-row my-4"}>
-              <div className={"d-flex flex-column"}>
+            <h5 className="my-3">Additional Information</h5>
+            <hr></hr>
+            <div className={"d-flex flex-row"}>
+              <div className={"d-flex flex-column list-group navigation-buttons"}>
                 {Object.entries(shell).map(([key, value]) => {
                   if (typeof value === "object" && shell[key] !== null) {
                     return (
-                      <button onClick={this.changeContent}>
+                      <div onClick={this.changeContent} className="navigation-button shadow-sm rounded list-group-item-action list-group-item border-top my-2">
                         {key[0].toUpperCase()}
                         {key.substring(1, key.length)}
-                      </button>
+                      </div>
                     );
                   }
                 })}

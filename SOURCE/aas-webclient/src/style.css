@@ -87,3 +87,14 @@
 .accordion-button::after{
     margin-right: 0;
 }
+
+.navigation-buttons{
+    margin-right: 1.5rem;
+}
+
+.navigation-button{
+    cursor: pointer;
+    width: 15rem;
+    padding: 0.8rem 2rem;
+    box-sizing: content-box;
+}

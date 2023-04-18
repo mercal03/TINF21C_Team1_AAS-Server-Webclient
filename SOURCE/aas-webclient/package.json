@@ -1,6 +1,6 @@
 {
   "name": "aas-webclient",
-  "homepage": "https://f0b3c497-4d15-48ec-bc83-8d486e734486.ma.bw-cloud-instance.org/",
+  "homepage": "https://mercal03.github.io/TINF21C_Team1_AAS-Server-Webclient",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,9 +14,14 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && version-info.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

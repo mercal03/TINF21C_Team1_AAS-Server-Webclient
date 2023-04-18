@@ -10,9 +10,7 @@ class AssetBody extends React.Component {
     for (let child of children) {
       child.hidden = true;
     }
-    document.getElementById(
-      event.target.innerHTML.toString().toLowerCase()
-    ).hidden = false;
+    document.getElementById(event.target.innerHTML).hidden = false;
   };
 
   render() {
@@ -56,10 +54,8 @@ class AssetBody extends React.Component {
                   if (typeof value === "object" && shell[key] !== null) {
                     return (
                       <div onClick={this.changeContent} className="navigation-button my-2 shadow-sm border rounded">
-                        {key[0].toUpperCase()}
-                        {key.substring(1, key.length)}
-                      </div>
-                      
+                        {key}
+                      </div>                   
                     );
                   }
                 })}

@@ -135,7 +135,21 @@ async function getFullShellData() {
     let url = window.sessionStorage.getItem("url");
     let fullData = [];
     let data = [];
-    const dataStrings = ["Nameplate", "TechnicalData", "Identification", "ArticleInformation", "ContactInformation", "HandoverDocumentation", "BillOfMaterial", "ServiceNotifications"];
+    const dataStrings = [
+        "Nameplate",
+        "TechnicalData",
+        "Identification",
+        "ArticleInformation",
+        "ContactInformation",
+        "HandoverDocumentation",
+        "BillOfMaterial",
+        "ServiceNotifications",
+        "Document",
+        "Service",
+        "DeviceDescriptionFiles",
+        "TechnicalSpecification",
+
+    ];
     for (let i = 0; i < dataStrings.length; i++) {
         fullData[i] = null;
         data[i] = null;

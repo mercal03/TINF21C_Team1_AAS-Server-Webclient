@@ -12,7 +12,7 @@ class Item extends React.Component {
         let name = this.props.shell.idShort;
         let image = this.props.shell.image ? this.props.shell.image : "";
         return (
-            <div onClick={this.openAsset} className={"item shadow-sm rounded p-2 my-2 d-sm-flex justify-content-between align-items-center list-group-item-action list-group-item border-top"}>
+            <div onClick={this.openAsset} className={"item p-2 my-2 d-sm-flex justify-content-between align-items-center list-group-item-action list-group-item border shadow-sm rounded"}>
                 <img style={{maxHeight: "50px"}} src={image} alt={""}/>
                 <div>
                    {name}

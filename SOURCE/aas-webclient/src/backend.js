@@ -133,22 +133,22 @@ function searchForKey(json, regex) {
 
 async function getFullShellData() {
     let url = window.sessionStorage.getItem("url");
-    let fullnameplateData = null, fulltechnicalData = null, fullidentificationData = null;
+    let fullData = [];
+    let data = [];
+    const dataStrings = ["Nameplate", "TechnicalData", "Identification", "ArticleInformation", "ContactInformation", "HandoverDocumentation", "BillOfMaterial", "ServiceNotifications"];
+    for (let i = 0; i < dataStrings.length; i++) {
+        fullData[i] = null;
+        data[i] = null;
+    }
     if (!url.endsWith("/")) {
         url += "/";
         window.sessionStorage.setItem("url", url);
     }
-    if (fullnameplateData === null) {
-        await findSubmodels(url, "Nameplate").then(response => fullnameplateData = response);
-        console.log(fullnameplateData);
-    }
-    if (fulltechnicalData === null) {
-        await findSubmodels(url, "TechnicalData").then(response => fulltechnicalData = response);
-        console.log(fulltechnicalData);
-    }
-    if (fullidentificationData === null) {
-        await findSubmodels(url, "Identification").then(response => fullidentificationData = response);
-        console.log(fullidentificationData);
+
+    for (let i = 0; i < fullData.length; i++) {
+        if (fullData[i] === null) {
+            await findSubmodels(url, dataStrings[i]).then(response => fullData[i] = response);
+        }
     }
 
     getData(url + "shells").then(response => {
@@ -162,41 +162,31 @@ async function getFullShellData() {
                 id = element.id;
             }
 
-            let nameplateData = fullnameplateData.find(item => {
-                return element.submodels ? element.submodels.find(submodel => {
-                    return submodel.keys[0] ? item.id === submodel.keys[0].value : false;
-                }) : false;
-            });
-
-            let technicalData = fulltechnicalData.find(item => {
-                return element.submodels ? element.submodels.find(submodel => {
-                    return submodel.keys[0] ? item.id === submodel.keys[0].value : false;
-                }) : false;
-            });
-
-            let identificationData = fullidentificationData.find(item => {
-                return element.submodels ? element.submodels.find(submodel => {
-                    return submodel.keys[0] ? item.id === submodel.keys[0].value : false;
-                }) : false;
-            });
-
-            let images;
-            if (Object.keys(element).includes("identification")) {
-                images = identificationData ? searchForKey(identificationData, /TypThumbnail/) : null;
-            } else {
-                images = technicalData ? searchForKeyv3(technicalData, /[pP]roductImage\d*/) : null;
+            for (let i = 0; i < fullData.length; i++) {
+                data[i] = fullData[i].find(item => {
+                    return element.submodels ? element.submodels.find(submodel => {
+                        return submodel.keys[0] ? item.id === submodel.keys[0].value : false;
+                    }) : false;
+                });
             }
 
-            return {
+            let images;
+            if (!Object.keys(element).includes("identification")) {
+                images = data[1] ? searchForKeyv3(data[1], /[pP]roductImage\d*/) : null;
+            }
+
+            let returnElement = {
                 idShort: element.idShort,
                 id: id,
                 idEncoded: btoa(id),
-                nameplateId: nameplateData ? nameplateData.id : null,
-                nameplateIdEncoded: nameplateData ? nameplateData.idEncoded : null,
                 image: images ? images[0] : null,
-                nameplate: nameplateData ? nameplateData : null,
-                identification: identificationData ? identificationData : null,
             }
+
+            for (let i = 0; i < dataStrings.length; i++) {
+                returnElement[dataStrings[i]] = data[i] ? data[i] : null;
+            }
+
+            return returnElement;
         });
         console.log(returnData);
         window.sessionStorage.setItem("shells", JSON.stringify(returnData));

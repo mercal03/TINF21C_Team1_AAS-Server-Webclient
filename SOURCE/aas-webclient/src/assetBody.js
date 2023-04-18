@@ -79,7 +79,7 @@ class AssetBody extends React.Component {
 
 const buildBody = (json, id = "") => {
   return (
-    <table id={id} className="asset-table">
+    <table id={id} className="asset-table" hidden={true}>
       <tbody>
         {json ? (
           Object.entries(json).map(([key, value]) => {

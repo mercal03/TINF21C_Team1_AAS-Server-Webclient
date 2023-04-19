@@ -1,6 +1,5 @@
 import React from "react";
 import ServerMenu from "./serverMenu";
-import Filter from "./filter"
 
 class Header extends React.Component {
     render() {

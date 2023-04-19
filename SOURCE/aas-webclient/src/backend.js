@@ -121,16 +121,6 @@ function searchForKeyv3(json, regex) {
     return returnList;
 }
 
-function searchForKey(json, regex) {
-    let returnList = [];
-    for (let key in json) {
-        if (regex.test(key) && json["FilePath"]) {
-            returnList.push(json["FilePath"]);
-        }
-    }
-    return returnList;
-}
-
 async function getFullShellData() {
     let url = window.sessionStorage.getItem("url");
     let fullData = [];
@@ -148,7 +138,6 @@ async function getFullShellData() {
         "Service",
         "DeviceDescriptionFiles",
         "TechnicalSpecification",
-
     ];
     for (let i = 0; i < dataStrings.length; i++) {
         fullData[i] = null;

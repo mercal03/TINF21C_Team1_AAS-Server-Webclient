@@ -35,7 +35,7 @@ class AssetBody extends React.Component {
                           <tr>
                             <td>
                               <p className="key">{key}</p>
-                              <p className="value">{(value=='')? '-' : value}</p>
+                              <p className="value">{value===''? '-' : value}</p>
                               <hr></hr>
                             </td>
                           </tr>
@@ -123,7 +123,7 @@ const buildBody = (json, id = "") => {
                 <tr>
                   <td>
                     <p className="key">{key}</p>
-                    <p className="value">{(value=='')? '-' : value}</p>
+                    <p className="value">{value===''? '-' : value}</p>
                     <hr></hr>
                   </td>
                 </tr>

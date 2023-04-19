@@ -1,9 +1,6 @@
 import React from "react";
 
 class AssetBody extends React.Component {
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("Body update");
-  }
 
   changeContent = (event) => {
     let children = document.getElementById("bodyContent").children;

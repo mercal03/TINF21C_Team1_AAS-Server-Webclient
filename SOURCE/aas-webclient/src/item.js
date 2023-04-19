@@ -1,12 +1,15 @@
 import React from 'react';
 import "./style.css";
 import {index, Main} from "./index";
+import {loadBody} from "./backend";
 
 class Item extends React.Component {
 
     openAsset = () => {
-        window.sessionStorage.setItem("shellBody", JSON.stringify(this.props.shell));
-        index.render(<Main/>);
+        loadBody(this.props.shell).then(response => {
+            window.sessionStorage.setItem("shellBody", JSON.stringify(response));
+            index.render(<Main/>);
+        });
     }
     render() {
         let name = this.props.shell.idShort;

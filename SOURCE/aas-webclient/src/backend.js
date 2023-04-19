@@ -1,6 +1,7 @@
 // let serverUrl = "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org";
 
 import {index, Main} from "./index";
+import {responsivePropType} from "react-bootstrap/createUtilityClasses";
 
 async function getData(url) {
     console.log("Get data of:");
@@ -128,16 +129,6 @@ async function getFullShellData() {
     const dataStrings = [
         "Nameplate",
         "TechnicalData",
-        "Identification",
-        "ArticleInformation",
-        "ContactInformation",
-        "HandoverDocumentation",
-        "BillOfMaterial",
-        "ServiceNotifications",
-        "Document",
-        "Service",
-        "DeviceDescriptionFiles",
-        "TechnicalSpecification",
     ];
     for (let i = 0; i < dataStrings.length; i++) {
         fullData[i] = null;
@@ -166,11 +157,13 @@ async function getFullShellData() {
             }
 
             for (let i = 0; i < fullData.length; i++) {
-                data[i] = fullData[i].find(item => {
-                    return element.submodels ? element.submodels.find(submodel => {
-                        return submodel.keys[0] ? item.id === submodel.keys[0].value : false;
-                    }) : false;
-                });
+                if (fullData[i] !== null) {
+                    data[i] = fullData[i].find(item => {
+                        return element.submodels ? element.submodels.find(submodel => {
+                            return submodel.keys[0] ? item.id === submodel.keys[0].value : false;
+                        }) : false;
+                    });
+                }
             }
 
             let images;
@@ -198,4 +191,43 @@ async function getFullShellData() {
     }).catch(err => alert(err));
 }
 
-export {getFullShellData}
+async function loadBody(shell) {
+    let url = window.sessionStorage.getItem("url");
+    url += "shells/" + btoa(shell.id) + "/submodels"
+    let ids = [];
+    await getData(url).then(response => {
+        for (let i = 0; i < response.length; i++) {
+            ids.push(response[i]["keys"][0]["value"])
+        }
+    });
+    for (let i = 0; i < ids.length; i++) {
+        await loadSubmodel(ids[i], url).then(response => {
+            shell[response.idShort] = response;
+        });
+    }
+    return shell;
+}
+
+async function loadSubmodel(id, url) {
+    url += "/" + btoa(id) + "/submodel"
+    return getData(url).then(element => {
+        if (Object.keys(element).includes("identification")) { //V1
+            let id = element.identification.id;
+            return {
+                idShort: element.idShort,
+                id: id,
+                idEncoded: btoa(id),
+                ...extractData(element.submodelElements, id),
+            }
+        } else { //V3
+            return {
+                idShort: element.idShort,
+                id: element.id,
+                idEncoded: btoa(element.id),
+                ...extractDatav3(element.submodelElements, element.id),
+            }
+        }
+    });
+}
+
+export {getFullShellData, loadBody}

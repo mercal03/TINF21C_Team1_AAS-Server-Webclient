@@ -179,7 +179,9 @@ class Filter extends React.Component {
                 }
                 }
         })
-        sortedDates.push(newAssetWithoutDateArray)
+        sortedDates = sortedDates.concat(newAssetWithoutDateArray);
+        console.log(newAssetWithoutDateArray)
+        console.log(sortedDates)
 
         if (sortedDates.length === 0) {
             //Error Handling

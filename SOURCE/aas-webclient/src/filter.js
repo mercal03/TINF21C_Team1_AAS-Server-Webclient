@@ -126,9 +126,8 @@ class Filter extends React.Component {
 
     sortAsYear() {
         let upOrDown = document.getElementById("sortByYear").value;
-        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+        let shells = JSON.parse(window.sessionStorage.getItem("content"));
         let newAssetDateArray = [];
-        console.log(newAssetDateArray)
 
         shells.forEach((element) => {
             if (element["Nameplate"]) {
@@ -136,14 +135,19 @@ class Filter extends React.Component {
                     if (element["Nameplate"]["YearOfConstruction"].length === 4) {
                         // Jahr formatieren
                         element["Nameplate"]["YearOfConstruction"] = element["Nameplate"]["YearOfConstruction"] + "-01-01";
+                        newAssetDateArray.push(element);
                     } else if (element["Nameplate"]["YearOfConstruction"].length === 7) {
                         // Jahr und Monat formatieren
                         element["Nameplate"]["YearOfConstruction"] = element["Nameplate"]["YearOfConstruction"] + "-01";
-                    } else {
+                        newAssetDateArray.push(element);
+                    } else if (element["Nameplate"]["YearOfConstruction"].length === 10) {
                         // Datum ist bereits im richtigen Format
                         element["Nameplate"]["YearOfConstruction"] = element["Nameplate"]["YearOfConstruction"];
+                        newAssetDateArray.push(element);
                     }
-                    newAssetDateArray.push(element);
+                    else{
+
+                    }
                 }
             }
         });
@@ -151,11 +155,28 @@ class Filter extends React.Component {
 
         let sortedDates = []
                 console.log("Sortiert:")
-                sortedDates = newAssetDateArray.sort((a, b) => {
-                    const dateA = new Date(a.Nameplate.YearOfConstruction);
-                    const dateB = new Date(b.Nameplate.YearOfConstruction);
-                    return dateA - dateB;
-                });
+        if(upOrDown === "up") {
+            sortedDates = newAssetDateArray.sort((a, b) => {
+                const dateA = new Date(a.Nameplate.YearOfConstruction);
+                const dateB = new Date(b.Nameplate.YearOfConstruction);
+                return dateA - dateB;
+            });
+        }
+        if (upOrDown === "down"){
+            sortedDates = newAssetDateArray.sort((a, b) => {
+                const dateA = new Date(a.Nameplate.YearOfConstruction);
+                const dateB = new Date(b.Nameplate.YearOfConstruction);
+                return dateB - dateA;
+            });
+        }
+
+        sortedDates.forEach((element) => {
+            if (element["Nameplate"]) {
+                if (element["Nameplate"]["YearOfConstruction"]) {
+                    console.log(element["Nameplate"]["YearOfConstruction"])
+                }
+                }
+        })
 
         if (sortedDates.length === 0) {
             //Error Handling
@@ -185,8 +206,8 @@ class Filter extends React.Component {
                             className="form-select"
                             onChange={this.sortAsYear}
                         >
-                            <option value="up">aufsteigend</option>
-                            <option value="down">absteigend</option>
+                            <option value="up">alt nach neu</option>
+                            <option value="down">neu nach alt</option>
                         </select>
                     </Dropdown.Menu>
                 </Dropdown>

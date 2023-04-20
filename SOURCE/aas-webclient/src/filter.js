@@ -129,6 +129,7 @@ class Filter extends React.Component {
         //let upOrDown = document.getElementById("sortByYear").value;
         let shells = JSON.parse(window.sessionStorage.getItem("content"));
         let newAssetDateArray = [];
+        let newAssetWithoutDateArray = [];
 
         shells.forEach((element) => {
             if (element["Nameplate"]) {
@@ -147,7 +148,7 @@ class Filter extends React.Component {
                         newAssetDateArray.push(element);
                     }
                     else{
-
+                        newAssetWithoutDateArray.push(element)
                     }
                 }
             }
@@ -178,10 +179,11 @@ class Filter extends React.Component {
                 }
                 }
         })
+        sortedDates.push(newAssetWithoutDateArray)
 
         if (sortedDates.length === 0) {
             //Error Handling
-            alert("Cannot Clear!");
+            alert("Cannot sort!");
         } else {
             window.sessionStorage.setItem("content", JSON.stringify(sortedDates));
             index.render(<Main />);
@@ -237,7 +239,6 @@ class Filter extends React.Component {
                                 </button>
                             </form>
                         </Dropdown.Item>
-
                         <div className={"form-group"}>
                             <select
                                 className={"form-control"}

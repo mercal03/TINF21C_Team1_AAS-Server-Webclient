@@ -127,9 +127,15 @@ class Filter extends React.Component {
 
     sortAsYear(upOrDown) {
         //let upOrDown = document.getElementById("sortByYear").value;
+        document.getElementById("up").style.background = ""
+        document.getElementById("up").style.color = ""
+        document.getElementById("down").style.background = ""
+        document.getElementById("down").style.color = ""
         let shells = JSON.parse(window.sessionStorage.getItem("content"));
         let newAssetDateArray = [];
         let newAssetWithoutDateArray = [];
+        document.getElementById(upOrDown).style.background = "#030d6c"
+        document.getElementById(upOrDown).style.color = "white"
 
         shells.forEach((element) => {
             if (element["Nameplate"]) {
@@ -206,8 +212,8 @@ class Filter extends React.Component {
                         Jahr
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <DropdownItem onClick={() => this.sortAsYear("up")} value={"up"}>alt nach neu</DropdownItem>
-                        <DropdownItem onClick={() => this.sortAsYear("down")} value={"down"}>neu nach alt</DropdownItem>
+                        <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")} value={"up"}>alt nach neu</DropdownItem>
+                        <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")} value={"down"}>neu nach alt</DropdownItem>
                     </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown

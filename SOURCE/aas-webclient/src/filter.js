@@ -1,6 +1,7 @@
 import React from "react";
 import { index, Main } from "./index";
 import Dropdown from "react-bootstrap/Dropdown";
+import DropdownItem from "react-bootstrap/DropdownItem";
 
 class Filter extends React.Component {
     filterForName() {
@@ -124,8 +125,8 @@ class Filter extends React.Component {
         }
     }
 
-    sortAsYear() {
-        let upOrDown = document.getElementById("sortByYear").value;
+    sortAsYear(upOrDown) {
+        //let upOrDown = document.getElementById("sortByYear").value;
         let shells = JSON.parse(window.sessionStorage.getItem("content"));
         let newAssetDateArray = [];
 
@@ -201,14 +202,8 @@ class Filter extends React.Component {
                         Jahr
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <select
-                            id={"sortByYear"}
-                            className="form-select"
-                            onChange={this.sortAsYear}
-                        >
-                            <option value="up">alt nach neu</option>
-                            <option value="down">neu nach alt</option>
-                        </select>
+                        <DropdownItem onClick={() => this.sortAsYear("up")} value={"up"}>alt nach neu</DropdownItem>
+                        <DropdownItem onClick={() => this.sortAsYear("down")} value={"down"}>neu nach alt</DropdownItem>
                     </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown
@@ -242,6 +237,7 @@ class Filter extends React.Component {
                                 </button>
                             </form>
                         </Dropdown.Item>
+
                         <div className={"form-group"}>
                             <select
                                 className={"form-control"}

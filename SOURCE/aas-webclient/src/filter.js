@@ -83,7 +83,7 @@ class Filter extends React.Component {
 
     searchForManufacturerName() {
         let newAssetArray = [];
-        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+        let shells = JSON.parse(window.sessionStorage.getItem("content"));
         let manufacturerNameSearchField = document
             .getElementById("manufacturerNameSearchField")
             .value.toLowerCase();

@@ -38,24 +38,13 @@ class Filter extends React.Component {
         });
         newAssetArray = [...new Set(newAssetArray)];
         newAssetArray.unshift("Alle");
-        var option = "";
-        for (var i = 0; i < newAssetArray.length; i++) {
-            option +=
-                '<option value="' +
-                newAssetArray[i] +
-                '">' +
-                newAssetArray[i] +
-                "</option>";
-        }
-        document.getElementById("manufacturerNameDropDown").innerHTML = option;
+        return newAssetArray
     }
 
-    filterForManufacturerName() {
+    filterForManufacturerName(manufacturerNameDropDown) {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
-        let manufacturerNameDropDown = document.getElementById(
-            "manufacturerNameDropDown"
-        ).value;
+        console.log(manufacturerNameDropDown)
         if (manufacturerNameDropDown) {
             if (manufacturerNameDropDown === "Alle") {
                 newAssetArray = shells;
@@ -138,24 +127,21 @@ class Filter extends React.Component {
         document.getElementById(upOrDown).style.color = "white"
 
         shells.forEach((element) => {
-            if (element["Nameplate"]) {
-                if (element["Nameplate"]["YearOfConstruction"]) {
-                    if (element["Nameplate"]["YearOfConstruction"].length === 4) {
-                        // Jahr formatieren
-                        element["Nameplate"]["YearOfConstruction"] = element["Nameplate"]["YearOfConstruction"] + "-01-01";
-                        newAssetDateArray.push(element);
-                    } else if (element["Nameplate"]["YearOfConstruction"].length === 7) {
-                        // Jahr und Monat formatieren
-                        element["Nameplate"]["YearOfConstruction"] = element["Nameplate"]["YearOfConstruction"] + "-01";
-                        newAssetDateArray.push(element);
-                    } else if (element["Nameplate"]["YearOfConstruction"].length === 10) {
-                        // Datum ist bereits im richtigen Format
-                        element["Nameplate"]["YearOfConstruction"] = element["Nameplate"]["YearOfConstruction"];
-                        newAssetDateArray.push(element);
-                    }
-                    else{
-                        newAssetWithoutDateArray.push(element)
-                    }
+            if (element["Nameplate"] && element["Nameplate"]["YearOfConstruction"]) {
+                if (element["Nameplate"]["YearOfConstruction"].length === 4) {
+                    // Jahr formatieren
+                    element["Nameplate"]["YearOfConstruction"] = element["Nameplate"]["YearOfConstruction"] + "-01-01";
+                    newAssetDateArray.push(element);
+                } else if (element["Nameplate"]["YearOfConstruction"].length === 7) {
+                    // Jahr und Monat formatieren
+                    element["Nameplate"]["YearOfConstruction"] = element["Nameplate"]["YearOfConstruction"] + "-01";
+                    newAssetDateArray.push(element);
+                } else if (element["Nameplate"]["YearOfConstruction"].length === 10) {
+                    // Datum ist bereits im richtigen Format
+                    element["Nameplate"]["YearOfConstruction"] = element["Nameplate"]["YearOfConstruction"];
+                    newAssetDateArray.push(element);
+                } else {
+                    newAssetWithoutDateArray.push(element)
                 }
             }
         });
@@ -191,7 +177,7 @@ class Filter extends React.Component {
 
         if (sortedDates.length === 0) {
             //Error Handling
-            alert("Cannot sort!");
+            alert("The assets cannot be sorted because they do not have a date");
         } else {
             window.sessionStorage.setItem("content", JSON.stringify(sortedDates));
             index.render(<Main />);
@@ -212,8 +198,8 @@ class Filter extends React.Component {
                         Jahr
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")} value={"up"}>alt nach neu</DropdownItem>
-                        <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")} value={"down"}>neu nach alt</DropdownItem>
+                        <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")}>alt nach neu</DropdownItem>
+                        <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")}>neu nach alt</DropdownItem>
                     </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown
@@ -221,7 +207,6 @@ class Filter extends React.Component {
                     autoClose="outside"
                     variant="light"
                     align="end"
-                    onClick={this.getManufactureName}
                 >
                     <Dropdown.Toggle id="dropdown-autoclose-outside">
                         Hersteller
@@ -247,13 +232,9 @@ class Filter extends React.Component {
                                 </button>
                             </form>
                         </Dropdown.Item>
-                        <div className={"form-group"}>
-                            <select
-                                className={"form-control"}
-                                id={"manufacturerNameDropDown"}
-                                onChange={this.filterForManufacturerName}
-                            ></select>
-                        </div>
+                        {this.getManufactureName().map(element => {
+                            return <Dropdown.Item value={element} onClick={() => this.filterForManufacturerName(element)}> {element} </Dropdown.Item>
+                        })}
                     </Dropdown.Menu>
                 </Dropdown>
                 {/* Suchfeldleiste */}
@@ -262,7 +243,7 @@ class Filter extends React.Component {
                         <input
                             id={"searchField"}
                             className="mr-sm-2 border-0 px-3 py-1 bg-transparent outline-none"
-                            type="search"
+                            type="text"
                             placeholder="Search"
                             aria-label="Search"
                         />

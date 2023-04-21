@@ -30,14 +30,18 @@ class Filter extends React.Component {
     getManufactureName() {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
-        shells.forEach((element) => {
-            if (element["Nameplate"]) {
-                if (element["Nameplate"]["ManufacturerName"])
-                    newAssetArray.push(element["Nameplate"]["ManufacturerName"]);
-            }
-        });
-        newAssetArray = [...new Set(newAssetArray)];
-        newAssetArray.unshift("Alle");
+
+        if(shells !== null) {
+            shells.forEach((element) => {
+                if (element["Nameplate"]) {
+                    if (element["Nameplate"]["ManufacturerName"])
+                        newAssetArray.push(element["Nameplate"]["ManufacturerName"]);
+                }
+            });
+            newAssetArray = [...new Set(newAssetArray)];
+            newAssetArray.unshift("Alle");
+
+        }
         return newAssetArray
     }
 

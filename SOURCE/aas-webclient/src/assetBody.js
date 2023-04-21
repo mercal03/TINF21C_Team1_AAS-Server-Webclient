@@ -3,12 +3,16 @@ import React from "react";
 class AssetBody extends React.Component {
 
   changeContent = (event) => {
+    this.clearView();
+    document.getElementById(event.target.innerHTML).hidden = false;
+  };
+
+  clearView = () => {
     let children = document.getElementById("bodyContent").children;
     for (let child of children) {
       child.hidden = true;
     }
-    document.getElementById(event.target.innerHTML).hidden = false;
-  };
+  }
 
   render() {
     let shell = JSON.parse(window.sessionStorage.getItem("shellBody"));
@@ -20,23 +24,27 @@ class AssetBody extends React.Component {
           <div className={"d-flex flex-column my-3"}>
             <div className={"d-flex flex-row"}>
               <div className="image-container border">
-                <img src={(shell.image==null)? 'https://de.ingrammicro.com/_layouts/images/CSDefaultSite/common/no-image-lg.png': shell.image} alt={""} className="asset-image" />
+                <a href={shell.image}>
+                  <img src={(shell.image==null)? 'https://de.ingrammicro.com/_layouts/images/CSDefaultSite/common/no-image-lg.png': shell.image} alt={""} className="asset-image" />
+                </a>
               </div>
 
               <div>
                 <table>
                   <tbody>
                     {Object.entries(shell).map(([key, value]) => {
-                      if (typeof value !== "object") {
-                        return (
-                          <tr>
-                            <td>
-                              <p className="key">{key}</p>
-                              <p className="value">{value===''? '-' : value}</p>
-                              <hr></hr>
-                            </td>
-                          </tr>
-                        );
+                      if (typeof value !== "object" && key !== "idShort") {
+                        if (value.search("attachment") === -1) {
+                          return (
+                              <tr>
+                                <td>
+                                  <p className="key">{key}</p>
+                                  <p className="value">{value===''? '-' : value}</p>
+                                  <hr></hr>
+                                </td>
+                              </tr>
+                          );
+                        }
                       }
                     })}
                   </tbody>
@@ -76,6 +84,7 @@ class AssetBody extends React.Component {
 
 const buildBody = (json, id = "") => {
   let hidden = id !== "";
+  if (id === "Nameplate") hidden = false;
   return (
     <table id={id} className="asset-table" hidden={hidden}>
       <tbody>

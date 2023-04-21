@@ -196,8 +196,12 @@ async function loadBody(shell) {
     url += "shells/" + btoa(shell.id) + "/submodels"
     let ids = [];
     await getData(url).then(response => {
-        for (let i = 0; i < response.length; i++) {
-            ids.push(response[i]["keys"][0]["value"])
+        if (response !== undefined) {
+            for (let i = 0; i < response.length; i++) {
+                if (response[i]["keys"].length > 0) {
+                    ids.push(response[i]["keys"][0]["value"]);
+                }
+            }
         }
     });
     for (let i = 0; i < ids.length; i++) {

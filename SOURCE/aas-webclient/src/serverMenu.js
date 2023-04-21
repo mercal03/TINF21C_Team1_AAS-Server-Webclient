@@ -8,6 +8,13 @@ class ServerMenu extends React.Component {
         serverlist: ["https://v3.admin-shell-io.com/", "http://localhost:5001", "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org"],
     }
 
+    componentDidMount() {
+        if (window.sessionStorage.getItem("url") === null) {
+            window.sessionStorage.setItem("url", "https://v3.admin-shell-io.com/");
+            getFullShellData();
+        }
+    }
+
     changeServer() {
         let mode = document.getElementById("addServerbtn").innerHTML;
         window.sessionStorage.clear();

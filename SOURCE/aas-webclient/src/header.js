@@ -8,7 +8,7 @@ class Header extends React.Component {
                     <div className="d-flex flex-wrap align-items-center justify-content-md-between justify-content-center">
                         <div><h1>AAS-Webclient</h1></div>
                         <div className="d-flex flex-nowrap align-items-center justify-content-between">
-                            <p>Current Server: {window.sessionStorage.getItem("url") ? window.sessionStorage.getItem("url") : ""}</p>
+                            <span>Current Server: {window.sessionStorage.getItem("url") ? window.sessionStorage.getItem("url") : ""}</span>
                             <ServerMenu/>
                         </div>
                         

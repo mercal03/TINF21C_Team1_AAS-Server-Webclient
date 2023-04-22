@@ -161,13 +161,6 @@ async function getFullShellData() {
     for (let i = 0; i < shells.length; i++) {
         await loadBody(shells[i]).then(shell => {
             shells[i] = shell;
-            if (shell["TechnicalData"]) {
-                if (shell["TechnicalData"]["GeneralInformation"]) {
-                    if (shell["TechnicalData"]["GeneralInformation"]["FilePath"]) {
-                        shells[i]["image"] = shell["TechnicalData"]["GeneralInformation"]["FilePath"];
-                    }
-                }
-            }
         });
     }
     console.log(shells);
@@ -192,6 +185,10 @@ async function loadBody(shell) {
     for (let i = 0; i < ids.length; i++) {
         await loadSubmodel(ids[i], url).then(response => {
             shell[response.idShort] = response;
+            let images = searchForKeyv3(response, /[pP]roductImage\d*/);
+            if (images.length > 0) {
+                shell["image"] = images[0];
+            }
         });
     }
     return shell;

@@ -1,7 +1,4 @@
-// let serverUrl = "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org";
-
 import {index, Main} from "./index";
-import {responsivePropType} from "react-bootstrap/createUtilityClasses";
 
 async function getData(url) {
     // console.log("Get data of:");
@@ -25,36 +22,6 @@ async function getData(url) {
         });
 }
 
-async function findSubmodels(url, category) {
-    console.log("Find Submodels");
-    return getData(url + "submodels?level=Deep").then(response => {
-        return response.filter(element => {
-            if (element.idShort) {
-                return element.idShort === category;
-            } else {
-                return false;
-            }
-        }).map(element => {
-            if (Object.keys(element).includes("identification")) { //V1
-                let id = element.identification.id;
-                return {
-                    idShort: element.idShort,
-                    id: id,
-                    idEncoded: btoa(id),
-                    ...extractData(element.submodelElements, id),
-                }
-            } else { //V3
-                return {
-                    idShort: element.idShort,
-                    id: element.id,
-                    idEncoded: btoa(element.id),
-                    ...extractDatav3(element.submodelElements, element.id),
-                }
-            }
-        });
-    });
-}
-
 function getLangString(json) {
     if ("langStrings" in json) {
         let langStrings = json.langStrings
@@ -69,7 +36,7 @@ function getLangString(json) {
     return "";
 }
 
-function extractDatav3(element, id, path = "") {
+function extractData(element, id, path = "") {
     let url = window.sessionStorage.getItem("url");
     url += "submodels/" + btoa(id) + "/submodelelements";
     let returnObject = {};
@@ -78,7 +45,7 @@ function extractDatav3(element, id, path = "") {
         if (nameplateElement.modelType === "MultiLanguageProperty") {
             returnObject[nameplateElement.idShort] = getLangString(nameplateElement.value);
         } else if (nameplateElement.modelType === "SubmodelElementCollection") {
-            returnObject[nameplateElement.idShort] = extractDatav3(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
+            returnObject[nameplateElement.idShort] = extractData(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
         } else if (nameplateElement.modelType === "Property") {
             returnObject[nameplateElement.idShort] = nameplateElement.value;
         } else if (nameplateElement.modelType === "File") {
@@ -89,34 +56,14 @@ function extractDatav3(element, id, path = "") {
     return returnObject;
 }
 
-function extractData(element, id, path = "") {
-    let url = window.sessionStorage.getItem("url");
-    url += "submodels/" + btoa(id) + "/submodelelements";
-    let returnObject = {};
-
-    for (let nameplateElement of element) {
-        if (nameplateElement.modelType.name === "MultiLanguageProperty") {
-            returnObject[nameplateElement.idShort] = getLangString(nameplateElement.value);
-        } else if (nameplateElement.modelType.name === "SubmodelElementCollection") {
-            returnObject[nameplateElement.idShort] = extractData(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
-        } else if (nameplateElement.modelType.name === "Property") {
-            returnObject[nameplateElement.idShort] = nameplateElement.value;
-        } else if (nameplateElement.modelType.name === "File") {
-            returnObject["FilePath"] = url + "/" + path + "." + nameplateElement.idShort + "/attachment";
-            returnObject[nameplateElement.idShort] = nameplateElement.value;
-        }
-    }
-    return returnObject;
-}
-
-function searchForKeyv3(json, regex) {
+function searchForKey(json, regex) {
     let returnList = [];
     if (typeof json === "object") {
         for (let key in json) {
             if (regex.test(key) && json["FilePath"]) {
                 returnList.push(json["FilePath"]);
             }
-            returnList = returnList.concat(searchForKeyv3(json[key], regex));
+            returnList = returnList.concat(searchForKey(json[key], regex));
         }
     }
     return returnList;
@@ -131,27 +78,14 @@ async function getFullShellData() {
 
     let shells = await getData(url + "shells").then(response => {
         return response.map(element => {
-            let id;
-            if (Object.keys(element).includes("identification")) {
-                console.log("Server is V1");
-                id = element.identification.id;
-            } else {
-                console.log("Server is V3");
-                id = element.id;
-            }
+            let id = element.id;
 
-            let returnElement = {
+            return {
                 idShort: element.idShort,
                 id: id,
                 idEncoded: btoa(id),
             }
-
-            return returnElement;
         });
-        // console.log(returnData);
-        // window.sessionStorage.setItem("shells", JSON.stringify(returnData));
-        // window.sessionStorage.setItem("content", JSON.stringify(returnData));
-        // index.render(<Main/>);
     }).catch(err => alert(err));
 
     window.sessionStorage.setItem("shells", JSON.stringify(shells));
@@ -185,7 +119,7 @@ async function loadBody(shell) {
     for (let i = 0; i < ids.length; i++) {
         await loadSubmodel(ids[i], url).then(response => {
             shell[response.idShort] = response;
-            let images = searchForKeyv3(response, /[pP]roductImage\d*/);
+            let images = searchForKey(response, /[pP]roductImage\d*/);
             if (images.length > 0) {
                 shell["image"] = images[0];
             }
@@ -197,21 +131,11 @@ async function loadBody(shell) {
 async function loadSubmodel(id, url) {
     url += "/" + btoa(id) + "/submodel"
     return getData(url).then(element => {
-        if (Object.keys(element).includes("identification")) { //V1
-            let id = element.identification.id;
-            return {
-                idShort: element.idShort,
-                id: id,
-                idEncoded: btoa(id),
-                ...extractData(element.submodelElements, id),
-            }
-        } else { //V3
-            return {
-                idShort: element.idShort,
-                id: element.id,
-                idEncoded: btoa(element.id),
-                ...extractDatav3(element.submodelElements, element.id),
-            }
+        return {
+            idShort: element.idShort,
+            id: element.id,
+            idEncoded: btoa(element.id),
+            ...extractData(element.submodelElements, element.id),
         }
     });
 }

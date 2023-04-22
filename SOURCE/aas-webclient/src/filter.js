@@ -120,15 +120,20 @@ class Filter extends React.Component {
 
     sortAsYear(upOrDown) {
         //let upOrDown = document.getElementById("sortByYear").value;
-        document.getElementById("up").style.background = ""
-        document.getElementById("up").style.color = ""
-        document.getElementById("down").style.background = ""
-        document.getElementById("down").style.color = ""
+        //document.getElementById("up").style.background = ""
+        document.getElementById("up").style.fontWeight = ""
+        //document.getElementById("up").style.color = ""
+        //document.getElementById("down").style.background = ""
+        //document.getElementById("down").style.color = ""
+        document.getElementById("down").style.fontWeight = ""
         let shells = JSON.parse(window.sessionStorage.getItem("content"));
         let newAssetDateArray = [];
         let newAssetWithoutDateArray = [];
-        document.getElementById(upOrDown).style.background = "#030d6c"
-        document.getElementById(upOrDown).style.color = "white"
+
+        
+        document.getElementById(upOrDown).style.fontWeight = "bold";
+        //document.getElementById(upOrDown).style.background = "#030d6c"
+        //document.getElementById(upOrDown).style.color = "white"
 
         shells.forEach((element) => {
             if (element["Nameplate"] && element["Nameplate"]["YearOfConstruction"]) {
@@ -194,25 +199,25 @@ class Filter extends React.Component {
             <div className="px-3 py-1 d-flex flex-row shadow-sm bg-light align-items-center justify-content-start">
                 <Dropdown
                     className="my-dropdown"
-                    autoClose="outside"
+                    autoClose="true"
                     variant="light"
                     align="end"
                 >
-                    <Dropdown.Toggle id="dropdown-autoclose-outside">
+                    <Dropdown.Toggle id="dropdown-autoclose-true">
                         Jahr
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")}>alt nach neu</DropdownItem>
-                        <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")}>neu nach alt</DropdownItem>
+                        <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")}>älteste zuerst</DropdownItem>
+                        <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")}>neuste zuerst</DropdownItem>
                     </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown
                     className="mx-2 my-dropdown"
-                    autoClose="outside"
+                    autoClose="true"
                     variant="light"
                     align="end"
                 >
-                    <Dropdown.Toggle id="dropdown-autoclose-outside">
+                    <Dropdown.Toggle id="dropdown-autoclose-true">
                         Hersteller
                     </Dropdown.Toggle>
                     <Dropdown.Menu>

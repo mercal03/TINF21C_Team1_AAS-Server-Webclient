@@ -5,12 +5,12 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 class ServerMenu extends React.Component {
     state = {
-        serverlist: ["https://v3.admin-shell-io.com/", "http://localhost:5001", "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org"],
+        serverlist: ["https://v3.admin-shell-io.com/", "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org"],
     }
 
     componentDidMount() {
         if (window.sessionStorage.getItem("url") === null) {
-            window.sessionStorage.setItem("url", "https://v3.admin-shell-io.com/");
+            window.sessionStorage.setItem("url", "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org");
             getFullShellData();
         }
     }

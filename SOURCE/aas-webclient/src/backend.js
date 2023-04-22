@@ -77,30 +77,35 @@ async function getFullShellData() {
     }
 
     let shells = await getData(url + "shells").then(response => {
-        return response.map(element => {
-            let id = element.id;
+        if (response !== undefined) {
+            return response.map(element => {
+                let id = element.id;
 
-            return {
-                idShort: element.idShort,
-                id: id,
-                idEncoded: btoa(id),
-            }
-        });
+                return {
+                    idShort: element.idShort,
+                    id: id,
+                    idEncoded: btoa(id),
+                }
+            });
+        }
     }).catch(err => alert(err));
 
-    window.sessionStorage.setItem("shells", JSON.stringify(shells));
-    window.sessionStorage.setItem("content", JSON.stringify(shells));
-    index.render(<Main/>);
+    if (shells !== undefined) {
+        window.sessionStorage.setItem("shells", JSON.stringify(shells));
+        window.sessionStorage.setItem("content", JSON.stringify(shells));
+        index.render(<Main/>);
 
-    for (let i = 0; i < shells.length; i++) {
-        await loadBody(shells[i]).then(shell => {
-            shells[i] = shell;
-        });
+        console.log(shells);
+        for (let i = 0; i < shells.length; i++) {
+            await loadBody(shells[i]).then(shell => {
+                shells[i] = shell;
+            });
+            window.sessionStorage.setItem("shells", JSON.stringify(shells));
+            window.sessionStorage.setItem("content", JSON.stringify(shells));
+            index.render(<Main/>);
+        }
+        console.log(shells);
     }
-    console.log(shells);
-    window.sessionStorage.setItem("shells", JSON.stringify(shells));
-    window.sessionStorage.setItem("content", JSON.stringify(shells));
-    index.render(<Main/>);
 }
 
 async function loadBody(shell) {

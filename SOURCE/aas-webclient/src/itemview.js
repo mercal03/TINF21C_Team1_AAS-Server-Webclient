@@ -7,7 +7,7 @@ class ItemView extends React.Component {
             return <div></div>;
         } else {
             let shells = JSON.parse(window.sessionStorage.getItem("content"));
-            if (shells !== null) {
+            if (shells !== null && shells !== undefined) {
                 return (
                     <div className="m-2 p-2 col-4 overflow-auto list-group">
                         <h3>Select Asset</h3>

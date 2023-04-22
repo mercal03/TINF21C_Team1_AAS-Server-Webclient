@@ -4,8 +4,8 @@ import {index, Main} from "./index";
 import {responsivePropType} from "react-bootstrap/createUtilityClasses";
 
 async function getData(url) {
-    console.log("Get data of:");
-    console.log(url);
+    // console.log("Get data of:");
+    // console.log(url);
     return fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -124,29 +124,13 @@ function searchForKeyv3(json, regex) {
 
 async function getFullShellData() {
     let url = window.sessionStorage.getItem("url");
-    let fullData = [];
-    let data = [];
-    const dataStrings = [
-        "Nameplate",
-        "TechnicalData",
-    ];
-    for (let i = 0; i < dataStrings.length; i++) {
-        fullData[i] = null;
-        data[i] = null;
-    }
     if (!url.endsWith("/")) {
         url += "/";
         window.sessionStorage.setItem("url", url);
     }
 
-    for (let i = 0; i < fullData.length; i++) {
-        if (fullData[i] === null) {
-            await findSubmodels(url, dataStrings[i]).then(response => fullData[i] = response);
-        }
-    }
-
-    getData(url + "shells").then(response => {
-        let returnData = response.map(element => {
+    let shells = await getData(url + "shells").then(response => {
+        return response.map(element => {
             let id;
             if (Object.keys(element).includes("identification")) {
                 console.log("Server is V1");
@@ -156,44 +140,45 @@ async function getFullShellData() {
                 id = element.id;
             }
 
-            for (let i = 0; i < fullData.length; i++) {
-                if (fullData[i] !== null) {
-                    data[i] = fullData[i].find(item => {
-                        return element.submodels ? element.submodels.find(submodel => {
-                            return submodel.keys[0] ? item.id === submodel.keys[0].value : false;
-                        }) : false;
-                    });
-                }
-            }
-
-            let images;
-            if (!Object.keys(element).includes("identification")) {
-                images = data[1] ? searchForKeyv3(data[1], /[pP]roductImage\d*/) : null;
-            }
-
             let returnElement = {
                 idShort: element.idShort,
                 id: id,
                 idEncoded: btoa(id),
-                image: images ? images[0] : null,
-            }
-
-            for (let i = 0; i < dataStrings.length; i++) {
-                returnElement[dataStrings[i]] = data[i] ? data[i] : null;
             }
 
             return returnElement;
         });
-        console.log(returnData);
-        window.sessionStorage.setItem("shells", JSON.stringify(returnData));
-        window.sessionStorage.setItem("content", JSON.stringify(returnData));
-        index.render(<Main/>);
+        // console.log(returnData);
+        // window.sessionStorage.setItem("shells", JSON.stringify(returnData));
+        // window.sessionStorage.setItem("content", JSON.stringify(returnData));
+        // index.render(<Main/>);
     }).catch(err => alert(err));
+
+    window.sessionStorage.setItem("shells", JSON.stringify(shells));
+    window.sessionStorage.setItem("content", JSON.stringify(shells));
+    index.render(<Main/>);
+
+    for (let i = 0; i < shells.length; i++) {
+        await loadBody(shells[i]).then(shell => {
+            shells[i] = shell;
+            if (shell["TechnicalData"]) {
+                if (shell["TechnicalData"]["GeneralInformation"]) {
+                    if (shell["TechnicalData"]["GeneralInformation"]["FilePath"]) {
+                        shells[i]["image"] = shell["TechnicalData"]["GeneralInformation"]["FilePath"];
+                    }
+                }
+            }
+        });
+    }
+    console.log(shells);
+    window.sessionStorage.setItem("shells", JSON.stringify(shells));
+    window.sessionStorage.setItem("content", JSON.stringify(shells));
+    index.render(<Main/>);
 }
 
 async function loadBody(shell) {
     let url = window.sessionStorage.getItem("url");
-    url += "shells/" + btoa(shell.id) + "/submodels"
+    url += "shells/" + shell.idEncoded + "/submodels"
     let ids = [];
     await getData(url).then(response => {
         if (response !== undefined) {

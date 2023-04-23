@@ -18,7 +18,9 @@ async function getData(url) {
             }).catch(err => {
                 console.log(response, err);
             })
-        }).catch(err => {});
+        }).catch(err => {
+            console.warn(err);
+        });
 }
 
 function getLangString(json) {
@@ -78,12 +80,21 @@ async function getFullShellData() {
     let shells = await getData(url + "shells").then(response => {
         if (response !== undefined) {
             return response.map(element => {
+                console.log(element);
                 let id = element.id;
+
+                let submodelIds = [];
+                if (element.submodels) {
+                    for (let i = 0; i < element.submodels.length; i++) {
+                        if (element.submodels[i]["keys"][0]) submodelIds.push(element.submodels[i]["keys"][0]["value"]);
+                    }
+                }
 
                 return {
                     idShort: element.idShort,
                     id: id,
                     idEncoded: btoa(id),
+                    submodels: submodelIds
                 }
             });
         }
@@ -109,37 +120,33 @@ async function getFullShellData() {
 
 async function loadBody(shell) {
     let url = window.sessionStorage.getItem("url");
-    url += "shells/" + shell.idEncoded + "/submodels"
-    let ids = [];
-    await getData(url).then(response => {
-        if (response !== undefined) {
-            for (let i = 0; i < response.length; i++) {
-                if (response[i]["keys"].length > 0) {
-                    ids.push(response[i]["keys"][0]["value"]);
+    url += "shells/" + shell.idEncoded + "/submodels";
+
+    for (let i = 0; i < shell.submodels.length; i++) {
+        await loadSubmodel(shell.submodels[i], url).then(response => {
+            if (response !== undefined) {
+                shell[response.idShort] = response;
+                let images = searchForKey(response, /[pP]roductImage\d*/);
+                if (images.length > 0) {
+                    shell["image"] = images[0];
                 }
-            }
-        }
-    });
-    for (let i = 0; i < ids.length; i++) {
-        await loadSubmodel(ids[i], url).then(response => {
-            shell[response.idShort] = response;
-            let images = searchForKey(response, /[pP]roductImage\d*/);
-            if (images.length > 0) {
-                shell["image"] = images[0];
             }
         });
     }
+    delete shell.submodels;
     return shell;
 }
 
 async function loadSubmodel(id, url) {
     url += "/" + btoa(id) + "/submodel"
     return getData(url).then(element => {
-        return {
-            idShort: element.idShort,
-            id: element.id,
-            idEncoded: btoa(element.id),
-            ...extractData(element.submodelElements, element.id),
+        if (element !== undefined) {
+            return {
+                idShort: element.idShort,
+                id: element.id,
+                idEncoded: btoa(element.id),
+                ...extractData(element.submodelElements, element.id),
+            }
         }
     });
 }

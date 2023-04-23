@@ -1,9 +1,14 @@
 import {index, Main} from "./index";
 
+export let controller = new AbortController();
+
 async function getData(url) {
-    // console.log("Get data of:");
-    // console.log(url);
-    return fetch(url)
+    controller = new AbortController();
+    console.log("Get data of:");
+    console.log(url);
+    return fetch(url, {
+        signal: controller.signal
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error("Fetch not ok");
@@ -13,13 +18,7 @@ async function getData(url) {
             }).catch(err => {
                 console.log(response, err);
             })
-        }).catch(err => {
-            window.sessionStorage.clear();
-            document.getElementById("server-url").value = "";
-            document.getElementById("addServerbtn").innerHTML = "Add Server";
-            index.render(<Main/>);
-            alert("Server nicht erreichbar");
-        });
+        }).catch(err => {});
 }
 
 function getLangString(json) {

@@ -1,5 +1,5 @@
 import React from "react";
-import { index, Main } from "./index";
+import {index, Main} from "./index";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownItem from "react-bootstrap/DropdownItem";
 
@@ -23,15 +23,73 @@ class Filter extends React.Component {
             alert("No results found");
         } else {
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
-            index.render(<Main />);
+            index.render(<Main/>);
         }
+    }
+
+    autoComplete() {
+        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+        let options = [];
+        shells.forEach((element) => {
+            if (element["idShort"]) {
+                console.log(element["idShort"])
+                options.push(element["idShort"])
+            }
+        })
+
+        const input = document.getElementById("searchField").value.toLowerCase();
+        const autoCompleteList = document.getElementById('autoCompleteList');
+        const searchField = document.getElementById('searchField');
+
+        autoCompleteList.style.position = 'absolute';
+        autoCompleteList.style.top = `${searchField.offsetTop + searchField.offsetHeight}px`;
+        autoCompleteList.style.left = `${searchField.offsetLeft}px`;
+        autoCompleteList.innerHTML = '';
+
+        const filteredOptions = options.filter(option => option.toLowerCase().startsWith(input));
+        filteredOptions.forEach(option => {
+            const li = document.createElement('li' );
+            li.textContent = option;
+            li.setAttribute('id', option)
+            li.addEventListener('click',()  => {
+                    let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+                    let newAsset = [];
+                    shells.forEach((element) => {
+                        if(element["idShort"] && element["idShort"] === option){
+                            newAsset.push(element)
+                        }
+                    })
+                if (newAsset.length === 0) {
+                    //Error Handling
+                    alert("No results found");
+                } else {
+                    window.sessionStorage.setItem("content", JSON.stringify(newAsset));
+                    index.render(<Main/>);
+                }
+                }
+            )
+            autoCompleteList.appendChild(li);
+        });
+    }
+
+    getAssetNames() {
+        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+        let AssetNames = [];
+        shells.forEach((element) => {
+            if (element["idShort"]) {
+                console.log(element["idShort"])
+                AssetNames.push(element["idShort"])
+            }
+        })
+        alert("HALLO")
+        return AssetNames
     }
 
     getManufactureName() {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
 
-        if(shells !== null) {
+        if (shells !== null) {
             shells.forEach((element) => {
                 if (element["Nameplate"]) {
                     if (element["Nameplate"]["ManufacturerName"])
@@ -71,7 +129,7 @@ class Filter extends React.Component {
             alert("No results found");
         } else {
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
-            index.render(<Main />);
+            index.render(<Main/>);
         }
     }
 
@@ -100,7 +158,7 @@ class Filter extends React.Component {
             alert("No results found");
         } else {
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
-            index.render(<Main />);
+            index.render(<Main/>);
         }
         document.getElementById("manufacturerNameSearchField").value = "";
     }
@@ -114,7 +172,7 @@ class Filter extends React.Component {
             alert("Cannot Clear!");
         } else {
             window.sessionStorage.setItem("content", JSON.stringify(shells));
-            index.render(<Main />);
+            index.render(<Main/>);
         }
     }
 
@@ -130,7 +188,7 @@ class Filter extends React.Component {
         let newAssetDateArray = [];
         let newAssetWithoutDateArray = [];
 
-        
+
         document.getElementById(upOrDown).style.fontWeight = "bold";
         //document.getElementById(upOrDown).style.background = "#030d6c"
         //document.getElementById(upOrDown).style.color = "white"
@@ -157,15 +215,15 @@ class Filter extends React.Component {
 
 
         let sortedDates = []
-                console.log("Sortiert:")
-        if(upOrDown === "up") {
+        console.log("Sortiert:")
+        if (upOrDown === "up") {
             sortedDates = newAssetDateArray.sort((a, b) => {
                 const dateA = new Date(a.Nameplate.YearOfConstruction);
                 const dateB = new Date(b.Nameplate.YearOfConstruction);
                 return dateA - dateB;
             });
         }
-        if (upOrDown === "down"){
+        if (upOrDown === "down") {
             sortedDates = newAssetDateArray.sort((a, b) => {
                 const dateA = new Date(a.Nameplate.YearOfConstruction);
                 const dateB = new Date(b.Nameplate.YearOfConstruction);
@@ -178,7 +236,7 @@ class Filter extends React.Component {
                 if (element["Nameplate"]["YearOfConstruction"]) {
                     console.log(element["Nameplate"]["YearOfConstruction"])
                 }
-                }
+            }
         })
         sortedDates = sortedDates.concat(newAssetWithoutDateArray);
         console.log(newAssetWithoutDateArray)
@@ -189,7 +247,7 @@ class Filter extends React.Component {
             alert("The assets cannot be sorted because they do not have a date");
         } else {
             window.sessionStorage.setItem("content", JSON.stringify(sortedDates));
-            index.render(<Main />);
+            index.render(<Main/>);
         }
     }
 
@@ -242,7 +300,8 @@ class Filter extends React.Component {
                             </form>
                         </Dropdown.Item>
                         {this.getManufactureName().map(element => {
-                            return <Dropdown.Item value={element} onClick={() => this.filterForManufacturerName(element)}> {element} </Dropdown.Item>
+                            return <Dropdown.Item value={element}
+                                                  onClick={() => this.filterForManufacturerName(element)}> {element} </Dropdown.Item>
                         })}
                     </Dropdown.Menu>
                 </Dropdown>
@@ -255,7 +314,9 @@ class Filter extends React.Component {
                             type="text"
                             placeholder="Search"
                             aria-label="Search"
+                            onKeyUp={this.autoComplete}
                         />
+                        <option id="autoCompleteList"></option>
                         <div className="input-group-append d-flex flex-row align-items-center">
                             <button
                                 id={"searchInputStringBtn"}
@@ -271,7 +332,8 @@ class Filter extends React.Component {
                                     class="bi bi-search"
                                     viewBox="0 0 16 16"
                                 >
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                                 </svg>
                             </button>
                             <input
@@ -282,8 +344,6 @@ class Filter extends React.Component {
                                 onClick={this.deleteSearchInput}
                             />
                         </div>
-
-
                     </div>
                 </form>
             </div>

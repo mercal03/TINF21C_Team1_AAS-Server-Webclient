@@ -4,8 +4,8 @@ export let controller = new AbortController();
 
 async function getData(url) {
     controller = new AbortController();
-    console.log("Get data of:");
-    console.log(url);
+    // console.log("Get data of:");
+    // console.log(url);
     return fetch(url, {
         signal: controller.signal
     })
@@ -71,6 +71,7 @@ function searchForKey(json, regex) {
 }
 
 async function getFullShellData() {
+    let apiVersion;
     let url = window.sessionStorage.getItem("url");
     if (!url.endsWith("/")) {
         url += "/";
@@ -80,13 +81,22 @@ async function getFullShellData() {
     let shells = await getData(url + "shells").then(response => {
         if (response !== undefined) {
             return response.map(element => {
-                console.log(element);
-                let id = element.id;
+                if (!apiVersion) {
+                    if (element["submodels"][0]["type"]) {
+                        apiVersion = 3;
+                    } else {
+                        apiVersion = 1;
+                    }
+                }
+
+                let id = apiVersion === 3 ? element.id : element.identification.id;
 
                 let submodelIds = [];
                 if (element.submodels) {
                     for (let i = 0; i < element.submodels.length; i++) {
-                        if (element.submodels[i]["keys"][0]) submodelIds.push(element.submodels[i]["keys"][0]["value"]);
+                        if (element.submodels[i]["keys"][0]) {
+                            submodelIds.push(element.submodels[i]["keys"][0]["value"]);
+                        }
                     }
                 }
 
@@ -94,6 +104,7 @@ async function getFullShellData() {
                     idShort: element.idShort,
                     id: id,
                     idEncoded: btoa(id),
+                    apiVersion: apiVersion,
                     submodels: submodelIds
                 }
             });
@@ -106,15 +117,19 @@ async function getFullShellData() {
         index.render(<Main/>);
 
         console.log(shells);
-        for (let i = 0; i < shells.length; i++) {
-            await loadBody(shells[i]).then(shell => {
-                shells[i] = shell;
-            });
-            window.sessionStorage.setItem("shells", JSON.stringify(shells));
-            window.sessionStorage.setItem("content", JSON.stringify(shells));
-            index.render(<Main/>);
+        if (apiVersion === 3) {
+            for (let i = 0; i < shells.length; i++) {
+                await loadBody(shells[i]).then(shell => {
+                    shells[i] = shell;
+                });
+                window.sessionStorage.setItem("shells", JSON.stringify(shells));
+                window.sessionStorage.setItem("content", JSON.stringify(shells));
+                index.render(<Main/>);
+            }
+            console.log(shells);
+        } else {
+            alert("Api Version 1 not supported yet")
         }
-        console.log(shells);
     }
 }
 

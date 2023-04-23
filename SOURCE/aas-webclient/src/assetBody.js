@@ -36,7 +36,7 @@ class AssetBody extends React.Component {
                                     <tbody>
                                     {Object.entries(shell).map(([key, value]) => {
                                         if (typeof value !== "object" && key !== "idShort") {
-                                            if (value.search("attachment") === -1) {
+                                            if (value.toString().search("attachment") === -1) {
                                                 return (
                                                     <tr>
                                                         <td>

@@ -5,7 +5,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 class ServerMenu extends React.Component {
     state = {
-        serverlist: ["https://v3.admin-shell-io.com/", "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org"],
+        serverlist: ["https://v3.admin-shell-io.com/", "https://admin-shell-io.com/5001/", "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org"],
     }
 
     componentDidMount() {

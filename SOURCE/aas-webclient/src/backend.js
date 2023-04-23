@@ -87,7 +87,9 @@ async function getFullShellData() {
                     } else {
                         apiVersion = 1;
                     }
+                    console.log(apiVersion);
                 }
+                console.log(element);
 
                 let id = apiVersion === 3 ? element.id : element.identification.id;
 
@@ -126,16 +128,17 @@ async function getFullShellData() {
                 window.sessionStorage.setItem("content", JSON.stringify(shells));
                 index.render(<Main/>);
             }
-            console.log(shells);
         } else {
             alert("Api Version 1 not supported yet")
         }
+        console.log(shells);
     }
 }
 
 async function loadBody(shell) {
     let url = window.sessionStorage.getItem("url");
     url += "shells/" + shell.idEncoded + "/submodels";
+    // url += "shells/" + shell.idEncoded + "/aas/submodels"; V1
 
     for (let i = 0; i < shell.submodels.length; i++) {
         await loadSubmodel(shell.submodels[i], url).then(response => {

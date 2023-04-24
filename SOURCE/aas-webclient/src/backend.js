@@ -37,7 +37,7 @@ function getLangString(json) {
     return "";
 }
 
-function extractData(element, id, path = "", api) {
+function extractData(element, id, path, api) {
     let url = window.sessionStorage.getItem("url");
     url += "submodels/" + btoa(id) + "/submodelelements";
     let returnObject = {};
@@ -170,14 +170,13 @@ async function loadBody(shell) {
 async function loadSubmodel(id, url, api) {
     url += "/" + btoa(id) + "/submodel"
     return getData(url).then(element => {
-        console.log(element);
         if (element !== undefined) {
             return {
                 semanticId: (element.semanticId.keys[0] ? element.semanticId.keys[0].value : ""),
                 idShort: element.idShort,
                 id: element.id,
                 idEncoded: btoa(element.id),
-                ...extractData(element.submodelElements, element.id, api),
+                ...extractData(element.submodelElements, element.id, "", api),
             }
         }
     });

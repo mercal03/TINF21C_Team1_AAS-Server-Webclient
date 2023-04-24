@@ -314,7 +314,7 @@ class Filter extends React.Component {
                             type="text"
                             placeholder="Search"
                             aria-label="Search"
-                            // onKeyUp={this.autoComplete}
+                            onKeyUp={this.autoComplete}
                         />
                         <option id="autoCompleteList"></option>
                         <div className="input-group-append d-flex flex-row align-items-center">

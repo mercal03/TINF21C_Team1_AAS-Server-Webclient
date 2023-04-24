@@ -1,11 +1,11 @@
 import React from "react";
-import {getFullShellData} from "./backend";
+import {controller, getFullShellData} from "./backend";
 import {index, Main} from "./index";
 import Dropdown from 'react-bootstrap/Dropdown';
 
 class ServerMenu extends React.Component {
     state = {
-        serverlist: ["https://v3.admin-shell-io.com/", "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org"],
+        serverlist: ["https://v3.admin-shell-io.com/", "https://admin-shell-io.com/5001/", "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org"],
     }
 
     componentDidMount() {
@@ -16,20 +16,12 @@ class ServerMenu extends React.Component {
     }
 
     changeServer() {
-        let mode = document.getElementById("addServerbtn").innerHTML;
+        controller.abort();
         window.sessionStorage.clear();
-        let prevUrl = window.sessionStorage.getItem("url");
-        if (mode === "Add Server" || prevUrl !== document.getElementById("server-url").value) {
-            document.getElementById("addServerbtn").innerHTML = "Delete Server";
-            index.render(<Main/>);
-            let url = document.getElementById("server-url").value;
-            window.sessionStorage.setItem("url", url);
-            getFullShellData();
-        } else {
-            document.getElementById("addServerbtn").innerHTML = "Add Server";
-            document.getElementById("server-url").value = "";
-            index.render(<Main/>);
-        }
+        index.render(<Main/>);
+        let url = document.getElementById("server-url").value;
+        window.sessionStorage.setItem("url", url);
+        getFullShellData();
     }
 
     render() {

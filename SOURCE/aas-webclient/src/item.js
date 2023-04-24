@@ -6,7 +6,7 @@ import {loadBody} from "./backend";
 class Item extends React.Component {
 
     openAsset = () => {
-        if (Object.keys(this.props.shell).length === 3) {
+        if (Object.keys(this.props.shell).includes("submodels")) {
             loadBody(this.props.shell).then(response => {
                 window.sessionStorage.setItem("shellBody", JSON.stringify(response));
                 index.render(<Main/>);

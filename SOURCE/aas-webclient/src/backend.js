@@ -37,23 +37,39 @@ function getLangString(json) {
     return "";
 }
 
-function extractData(element, id, path = "") {
+function extractData(element, id, path = "", api) {
     let url = window.sessionStorage.getItem("url");
     url += "submodels/" + btoa(id) + "/submodelelements";
     let returnObject = {};
 
-    for (let nameplateElement of element) {
-        if (nameplateElement.modelType === "MultiLanguageProperty") {
-            returnObject[nameplateElement.idShort] = getLangString(nameplateElement.value);
-        } else if (nameplateElement.modelType === "SubmodelElementCollection") {
-            returnObject[nameplateElement.idShort] = extractData(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort);
-        } else if (nameplateElement.modelType === "Property") {
-            returnObject[nameplateElement.idShort] = nameplateElement.value;
-        } else if (nameplateElement.modelType === "File") {
-            returnObject["FilePath"] = url + "/" + path + "." + nameplateElement.idShort + "/attachment";
-            returnObject[nameplateElement.idShort] = nameplateElement.value;
+    if (api === 3) {
+        for (let nameplateElement of element) {
+            if (nameplateElement.modelType === "MultiLanguageProperty") {
+                returnObject[nameplateElement.idShort] = getLangString(nameplateElement.value);
+            } else if (nameplateElement.modelType === "SubmodelElementCollection") {
+                returnObject[nameplateElement.idShort] = extractData(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort, api);
+            } else if (nameplateElement.modelType === "Property") {
+                returnObject[nameplateElement.idShort] = nameplateElement.value;
+            } else if (nameplateElement.modelType === "File") {
+                returnObject["FilePath"] = url + "/" + path + "." + nameplateElement.idShort + "/attachment";
+                returnObject[nameplateElement.idShort] = nameplateElement.value;
+            }
+        }
+    } else {
+        for (let nameplateElement of element) {
+            if (nameplateElement.modelType.name === "MultiLanguageProperty") {
+                returnObject[nameplateElement.idShort] = getLangString(nameplateElement.value);
+            } else if (nameplateElement.modelType.name === "SubmodelElementCollection") {
+                returnObject[nameplateElement.idShort] = extractData(nameplateElement.value, id, path + (path.length > 0 ? "." : "") + nameplateElement.idShort, api);
+            } else if (nameplateElement.modelType.name === "Property") {
+                returnObject[nameplateElement.idShort] = nameplateElement.value;
+            } else if (nameplateElement.modelType.name === "File") {
+                returnObject["FilePath"] = url + "/" + path + "." + nameplateElement.idShort + "/attachment";
+                returnObject[nameplateElement.idShort] = nameplateElement.value;
+            }
         }
     }
+
     return returnObject;
 }
 
@@ -119,17 +135,13 @@ async function getFullShellData() {
         index.render(<Main/>);
 
         console.log(shells);
-        if (apiVersion === 3) {
-            for (let i = 0; i < shells.length; i++) {
-                await loadBody(shells[i]).then(shell => {
-                    shells[i] = shell;
-                });
-                window.sessionStorage.setItem("shells", JSON.stringify(shells));
-                window.sessionStorage.setItem("content", JSON.stringify(shells));
-                index.render(<Main/>);
-            }
-        } else {
-            alert("Api Version 1 not supported yet")
+        for (let i = 0; i < shells.length; i++) {
+            await loadBody(shells[i]).then(shell => {
+                shells[i] = shell;
+            });
+            window.sessionStorage.setItem("shells", JSON.stringify(shells));
+            window.sessionStorage.setItem("content", JSON.stringify(shells));
+            index.render(<Main/>);
         }
         console.log(shells);
     }
@@ -137,11 +149,11 @@ async function getFullShellData() {
 
 async function loadBody(shell) {
     let url = window.sessionStorage.getItem("url");
-    url += "shells/" + shell.idEncoded + "/submodels";
-    // url += "shells/" + shell.idEncoded + "/aas/submodels"; V1
+    url += "shells/" + shell.idEncoded
+    url += (shell.apiVersion === 3 ? "/submodels" : "/aas/submodels");
 
     for (let i = 0; i < shell.submodels.length; i++) {
-        await loadSubmodel(shell.submodels[i], url).then(response => {
+        await loadSubmodel(shell.submodels[i], url, shell.apiVersion).then(response => {
             if (response !== undefined) {
                 shell[response.idShort] = response;
                 let images = searchForKey(response, /[pP]roductImage\d*/);
@@ -155,15 +167,17 @@ async function loadBody(shell) {
     return shell;
 }
 
-async function loadSubmodel(id, url) {
+async function loadSubmodel(id, url, api) {
     url += "/" + btoa(id) + "/submodel"
     return getData(url).then(element => {
+        console.log(element);
         if (element !== undefined) {
             return {
+                semanticId: (element.semanticId.keys[0] ? element.semanticId.keys[0].value : ""),
                 idShort: element.idShort,
                 id: element.id,
                 idEncoded: btoa(element.id),
-                ...extractData(element.submodelElements, element.id),
+                ...extractData(element.submodelElements, element.id, api),
             }
         }
     });

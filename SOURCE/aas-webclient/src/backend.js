@@ -140,7 +140,6 @@ async function getFullShellData() {
                 shells[i] = shell;
             });
             window.sessionStorage.setItem("shells", JSON.stringify(shells));
-            window.sessionStorage.setItem("content", JSON.stringify(shells));
             index.render(<Main/>);
         }
         console.log(shells);

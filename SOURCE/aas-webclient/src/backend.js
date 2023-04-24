@@ -105,7 +105,6 @@ async function getFullShellData() {
                     }
                     console.log(apiVersion);
                 }
-                console.log(element);
 
                 let id = apiVersion === 3 ? element.id : element.identification.id;
 
@@ -148,8 +147,19 @@ async function getFullShellData() {
 
 async function loadBody(shell) {
     let url = window.sessionStorage.getItem("url");
-    url += "shells/" + shell.idEncoded
+    url += "shells/" + (url.search("murr") === -1 ? btoa(shell.id) : encodeURIComponent(shell.id));
     url += (shell.apiVersion === 3 ? "/submodels" : "/aas/submodels");
+
+
+    if (url.search("murr") !== -1) {
+        let submodelData = [];
+        await getData(url).then(element => {
+            for (let i = 0; i < element.length; i++) {
+                submodelData.push(element[i].idShort);
+            }
+        });
+        shell.submodels = submodelData;
+    }
 
     for (let i = 0; i < shell.submodels.length; i++) {
         await loadSubmodel(shell.submodels[i], url, shell.apiVersion).then(response => {
@@ -167,7 +177,7 @@ async function loadBody(shell) {
 }
 
 async function loadSubmodel(id, url, api) {
-    url += "/" + btoa(id) + "/submodel"
+    url += "/" + (url.search("murr") === -1 ? btoa(id) : id) + "/submodel"
     return getData(url).then(element => {
         if (element !== undefined) {
             return {

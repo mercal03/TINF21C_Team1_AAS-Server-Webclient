@@ -41,17 +41,16 @@ class Filter extends React.Component {
         const autoCompleteList = document.getElementById('autoCompleteList');
         const searchField = document.getElementById('searchField');
 
-        autoCompleteList.style.position = 'absolute';
-        autoCompleteList.style.top = `${searchField.offsetTop + searchField.offsetHeight}px`;
-        autoCompleteList.style.left = `${searchField.offsetLeft}px`;
         autoCompleteList.innerHTML = '';
 
         const filteredOptions = options.filter(option => option.toLowerCase().startsWith(input));
         filteredOptions.forEach(option => {
             const li = document.createElement('li' );
             li.textContent = option;
-            li.setAttribute('id', option)
+            li.setAttribute('id', option);
+            li.classList.add('autoCompleteItem');
             li.addEventListener('click',()  => {
+                    document.getElementById("autoCompleteList").style.display='none';
                     let shells = JSON.parse(window.sessionStorage.getItem("shells"));
                     let newAsset = [];
                     shells.forEach((element) => {
@@ -70,6 +69,7 @@ class Filter extends React.Component {
             )
             autoCompleteList.appendChild(li);
         });
+        autoCompleteList.style.display='block';
     }
 
     getAssetNames() {
@@ -271,11 +271,11 @@ class Filter extends React.Component {
                 </Dropdown>
                 <Dropdown
                     className="mx-2 my-dropdown"
-                    autoClose="true"
+                    autoClose="outside"
                     variant="light"
                     align="end"
                 >
-                    <Dropdown.Toggle id="dropdown-autoclose-true">
+                    <Dropdown.Toggle id="dropdown-autoclose-outside">
                         Hersteller
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
@@ -306,45 +306,45 @@ class Filter extends React.Component {
                     </Dropdown.Menu>
                 </Dropdown>
                 {/* Suchfeldleiste */}
-                <form onSubmit={(event) => event.preventDefault()}>
+                <form autoComplete="off" onBlur={async (event) => {await new Promise(resolve => setTimeout(resolve, 200)); document.getElementById("autoCompleteList").style.display='none';}} onSubmit={(event) => {event.preventDefault()}}>
                     <div className="search-bar-container d-flex flex-row bg-white align-items-center input-group">
-                        <input
-                            id={"searchField"}
-                            className="mr-sm-2 border-0 px-3 py-1 bg-transparent outline-none"
-                            type="text"
-                            placeholder="Search"
-                            aria-label="Search"
-                            onKeyUp={this.autoComplete}
-                        />
-                        <option id="autoCompleteList"></option>
-                        <div className="input-group-append d-flex flex-row align-items-center">
-                            <button
-                                id={"searchInputStringBtn"}
-                                className="my-2 my-sm-0 d-flex my-search-button"
-                                type="submit"
-                                onClick={this.filterForName}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    fill="currentColor"
-                                    class="bi bi-search"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path
-                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                </svg>
-                            </button>
                             <input
-                                className="my-search-button px-3"
-                                type="reset"
-                                value="X"
-                                alt="Clear the search form"
-                                onClick={this.deleteSearchInput}
+                                id={"searchField"}
+                                className="mr-sm-2 border-0 px-3 py-1 bg-transparent outline-none"
+                                type="text"
+                                placeholder="Search"
+                                aria-label="Search"
+                                onKeyUp={this.autoComplete}
                             />
-                        </div>
-                    </div>
+                            <div className="input-group-append d-flex flex-row align-items-center">
+                                <button
+                                    id={"searchInputStringBtn"}
+                                    className="my-2 my-sm-0 d-flex my-search-button"
+                                    type="submit"
+                                    onClick={this.filterForName}
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        fill="currentColor"
+                                        class="bi bi-search"
+                                        viewBox="0 0 16 16"
+                                    >
+                                        <path
+                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                    </svg>
+                                </button>
+                                <input
+                                    className="my-search-button px-3"
+                                    type="reset"
+                                    value="X"
+                                    alt="Clear the search form"
+                                    onClick={this.deleteSearchInput}
+                                />
+                            </div>
+                    </div>  
+                    <ul id="autoCompleteList" className="bg-white border rounded shadow-sm"></ul>
                 </form>
             </div>
         );

@@ -106,3 +106,21 @@
     background-color: #ebebeb;
 }
 
+#autoCompleteList{
+    display: none;
+    position: absolute;
+    transform: translateY(0.4rem);
+    list-style: none;
+    padding: 0;
+    min-width: 18rem;
+    z-index: 1000;
+}
+
+.autoCompleteItem{
+    padding: 0.3rem;
+    cursor: pointer;
+}
+
+.autoCompleteItem:hover{
+    background-color: #f8f9fa;
+}

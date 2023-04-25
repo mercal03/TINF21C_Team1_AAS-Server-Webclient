@@ -71,6 +71,15 @@ class Filter extends React.Component {
                     autoCompleteList.appendChild(li);
                 });
             }
+            else{
+                if (shells.length === 0) {
+                    //Error Handling
+                    alert("No results found");
+                } else {
+                    window.sessionStorage.setItem("content", JSON.stringify(shells));
+                    index.render(<Main/>);
+                }
+            }
             autoCompleteList.style.display = 'block';
         }
 

@@ -305,6 +305,9 @@ class Filter extends React.Component {
                 </Dropdown>
                 {/* Suchfeldleiste */}
                 <form autoComplete="off" onBlur={async (event) => {await new Promise(resolve => setTimeout(resolve, 200)); document.getElementById("autoCompleteList").style.display='none';}} onSubmit={(event) => {event.preventDefault()}}>
+                    <div className="error_message" style={{ visibility: "visible", color: "darkred" }} >
+                        Keine Einträge gefunden
+                    </div>
                     <div className="search-bar-container d-flex flex-row bg-white align-items-center input-group">
                             <input
                                 id={"searchField"}
@@ -341,7 +344,7 @@ class Filter extends React.Component {
                                     onClick={this.deleteSearchInput}
                                 />
                             </div>
-                    </div>  
+                    </div>
                     <ul id="autoCompleteList" className="bg-white border rounded shadow-sm"></ul>
                 </form>
             </div>

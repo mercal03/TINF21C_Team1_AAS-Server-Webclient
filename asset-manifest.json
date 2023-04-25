@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/TINF21C_Team1_AAS-Server-Webclient/static/css/main.9e235243.css",
-    "main.js": "/TINF21C_Team1_AAS-Server-Webclient/static/js/main.b3eded02.js",
+    "main.js": "/TINF21C_Team1_AAS-Server-Webclient/static/js/main.acfdc031.js",
     "index.html": "/TINF21C_Team1_AAS-Server-Webclient/index.html",
     "main.9e235243.css.map": "/TINF21C_Team1_AAS-Server-Webclient/static/css/main.9e235243.css.map",
-    "main.b3eded02.js.map": "/TINF21C_Team1_AAS-Server-Webclient/static/js/main.b3eded02.js.map"
+    "main.acfdc031.js.map": "/TINF21C_Team1_AAS-Server-Webclient/static/js/main.acfdc031.js.map"
   },
   "entrypoints": [
     "static/css/main.9e235243.css",
-    "static/js/main.b3eded02.js"
+    "static/js/main.acfdc031.js"
   ]
 }

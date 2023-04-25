@@ -11,7 +11,7 @@ class Header extends React.Component {
                             <nav className="d-flex flex-nowrap align-items-center justify-content-between">
                                 <span>Current Server: <a href={serverUrl} target={"_blank"}>{serverUrl}</a></span>
                                 <ServerMenu/>
-                                <a href="/about" id="navBtn">About</a>
+                                <a href="/about" class="navBtn">About</a>
                             </nav>
                     </div>
             </header>

@@ -8,7 +8,7 @@ class HeaderAboutPage extends React.Component {
                 <div className="d-flex flex-wrap align-items-center justify-content-md-between justify-content-center">
                     <div><h1>AAS-Webclient</h1></div>
                     <nav className="d-flex flex-nowrap align-items-center justify-content-between">
-                        <a href="/" id="navBtn">Home</a>
+                        <a href="/" class="navBtn">Home</a>
                     </nav>
                 </div>
             </header>

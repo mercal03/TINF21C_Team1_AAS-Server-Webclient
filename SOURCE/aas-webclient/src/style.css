@@ -14,11 +14,17 @@
     border-bottom: solid black 1px;
 }
 
-#navBtn{
-    margin-left: 10px;
+#aboutPage{
+    height: 100px;
+    width: 100px;
+    background-color: #0dcaf0;
+}
+
+.navBtn{
     background-color: transparent;
     color: white;
     border-color: transparent;
+    text-decoration: none;
 }
 
 .version{

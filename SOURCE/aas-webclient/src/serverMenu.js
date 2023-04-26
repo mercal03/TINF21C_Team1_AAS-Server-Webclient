@@ -30,7 +30,7 @@ class ServerMenu extends React.Component {
         return (
             <Dropdown className="mx-2" autoClose="outside" variant="light">
                 <Dropdown.Toggle id="dropdown-autoclose-outside">
-                    Server Menü
+                    Server Menu
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item>

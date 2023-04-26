@@ -265,15 +265,15 @@ class Filter extends React.Component {
                     autoClose="true"
                     variant="light"
                     align="end"
-                    onClick={()=>{document.getElementById("error_message_filterForManufacturerName").style.visibility = "hidden"}}
+                   // onClick={()=>{document.getElementById("error_message_filterForManufacturerName").style.visibility = "hidden"}}
 
                 >
                     <Dropdown.Toggle id="dropdown-autoclose-true">
-                        Jahr
+                        Year
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")}>älteste zuerst</DropdownItem>
-                        <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")}>neuste zuerst</DropdownItem>
+                        <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")}>oldest first</DropdownItem>
+                        <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")}>latest first</DropdownItem>
                     </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown
@@ -283,7 +283,7 @@ class Filter extends React.Component {
                     align="end"
                 >
                     <Dropdown.Toggle id="dropdown-autoclose-outside" >
-                        Hersteller
+                        Manufacturer
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item>
@@ -308,7 +308,7 @@ class Filter extends React.Component {
                                 </button>
                             </form>
                             <div className="error_message" id="error_message_filterForManufacturerName" style={{ visibility: "hidden", color: "darkred" }} >
-                                Keine Einträge gefunden
+                                No entries found
                             </div>
                         </Dropdown.Item>
                         {this.getManufactureName().map(element => {
@@ -362,7 +362,7 @@ class Filter extends React.Component {
                     <ul id="autoCompleteList" className="bg-white border rounded shadow-sm"></ul>
                 </form>
                 <div className="error_message" id="error_message_NextToSearchField" style={{ visibility: "hidden", color: "darkred" }} >
-                    Keine Einträge gefunden
+                    No entries found
                 </div>
             </div>
         );

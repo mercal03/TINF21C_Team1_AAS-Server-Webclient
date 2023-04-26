@@ -6,7 +6,7 @@ class AboutPage extends React.Component {
         return (
             <div className='vh-100 d-flex flex-column'>
                 <HeaderAboutPage/>
-                <main className='d-flex overflow-hidden mx-auto'>
+                <main className='d-flex overflow-hidden mx-auto m-5'>
                     <div className="card text-center">
                         <div className="card-header">
                             This website is the outcome of a 2023 study project

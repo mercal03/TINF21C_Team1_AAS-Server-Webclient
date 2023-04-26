@@ -8,12 +8,12 @@ class Item extends React.Component {
     openAsset = () => {
         if (Object.keys(this.props.shell).includes("submodels")) {
             loadBody(this.props.shell).then(response => {
-                document.getElementById("error_message1").style.visibility = "hidden";
+                document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
                 window.sessionStorage.setItem("shellBody", JSON.stringify(response));
                 index.render(<Main/>);
             });
         } else {
-            document.getElementById("error_message1").style.visibility = "hidden";
+            document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
             window.sessionStorage.setItem("shellBody", JSON.stringify(this.props.shell));
             index.render(<Main/>);
         }

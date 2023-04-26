@@ -20,10 +20,10 @@ class Filter extends React.Component {
         });
         if (newAssetArray.length === 0) {
             //Error Handling
-            document.getElementById("error_message1").style.visibility = "visible";
+            document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
         } else {
             //Deletes error messages from a wrong search before, if an Asset is found
-            document.getElementById("error_message1").style.visibility = "hidden";
+            document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
             index.render(<Main/>);
         }
@@ -60,12 +60,12 @@ class Filter extends React.Component {
                                 if (element["idShort"] && element["idShort"] === option) {
                                     newAsset.push(element);
                                     //Deletes error messages from a wrong search before, if an Asset is found
-                                    document.getElementById("error_message1").style.visibility = "hidden";
+                                    document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
                                 }
                             })
                             if (newAsset.length === 0) {
                                 //Error Handling
-                                alert("No results found");
+                                document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
                             } else {
                                 window.sessionStorage.setItem("content", JSON.stringify(newAsset));
                                 index.render(<Main/>);
@@ -78,7 +78,7 @@ class Filter extends React.Component {
             else{
                 if (shells.length === 0) {
                     //Error Handling
-                    alert("No results found");
+                    document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
                 } else {
                     window.sessionStorage.setItem("content", JSON.stringify(shells));
                     index.render(<Main/>);
@@ -128,9 +128,11 @@ class Filter extends React.Component {
         }
         if (newAssetArray.length === 0) {
             //Error Handling
-            alert("No results found");
+            document.getElementById("error_message_filterForManufacturerName").style.visibility = "visible";
+
         } else {
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
+            document.getElementById("error_message_filterForManufacturerName").style.visibility = "hidden";
             index.render(<Main/>);
         }
     }
@@ -157,9 +159,10 @@ class Filter extends React.Component {
         }
         if (newAssetArray.length === 0) {
             //Error Handling
-            alert("No results found");
+            document.getElementById("error_message_filterForManufacturerName").style.visibility = "visible";
         } else {
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
+            document.getElementById("error_message_filterForManufacturerName").style.visibility = "hidden";
             index.render(<Main/>);
         }
         document.getElementById("manufacturerNameSearchField").value = "";
@@ -262,6 +265,8 @@ class Filter extends React.Component {
                     autoClose="true"
                     variant="light"
                     align="end"
+                    onClick={()=>{document.getElementById("error_message_filterForManufacturerName").style.visibility = "hidden"}}
+
                 >
                     <Dropdown.Toggle id="dropdown-autoclose-true">
                         Jahr
@@ -277,7 +282,7 @@ class Filter extends React.Component {
                     variant="light"
                     align="end"
                 >
-                    <Dropdown.Toggle id="dropdown-autoclose-outside">
+                    <Dropdown.Toggle id="dropdown-autoclose-outside" >
                         Hersteller
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
@@ -291,6 +296,8 @@ class Filter extends React.Component {
                                     type="text"
                                     className="form-control form-control-dark  w-auto"
                                     placeholder="Hersteller"
+                                    onClick={()=>{document.getElementById("error_message_filterForManufacturerName").style.visibility = "hidden"}}
+
                                 ></input>
                                 <button
                                     type="submit"
@@ -300,6 +307,9 @@ class Filter extends React.Component {
                                     Search
                                 </button>
                             </form>
+                            <div className="error_message" id="error_message_filterForManufacturerName" style={{ visibility: "hidden", color: "darkred" }} >
+                                Keine Einträge gefunden
+                            </div>
                         </Dropdown.Item>
                         {this.getManufactureName().map(element => {
                             return <Dropdown.Item value={element}
@@ -317,6 +327,8 @@ class Filter extends React.Component {
                                 placeholder="Search"
                                 aria-label="Search"
                                 onKeyUp={this.autoComplete}
+                                onClick={()=>{document.getElementById("error_message_filterForManufacturerName").style.visibility = "hidden"}}
+
                             />
                             <div className="input-group-append d-flex flex-row align-items-center">
                                 <button
@@ -343,13 +355,13 @@ class Filter extends React.Component {
                                     value="X"
                                     alt="Clear the search form"
                                     onClick={this.deleteSearchInput}
-                                    onClick={()=>{document.getElementById("error_message1").style.visibility = "hidden"}}
+                                    onClick={()=>{document.getElementById("error_message_NextToSearchField").style.visibility = "hidden"}}
                                 />
                             </div>
                     </div>
                     <ul id="autoCompleteList" className="bg-white border rounded shadow-sm"></ul>
                 </form>
-                <div className="error_message" id="error_message1" style={{ visibility: "hidden", color: "darkred" }} >
+                <div className="error_message" id="error_message_NextToSearchField" style={{ visibility: "hidden", color: "darkred" }} >
                     Keine Einträge gefunden
                 </div>
             </div>

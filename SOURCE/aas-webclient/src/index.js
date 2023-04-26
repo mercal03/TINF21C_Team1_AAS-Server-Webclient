@@ -1,22 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Header from "./header";
 import "./bootstrap/bootstrap.rtl.min.css";
 import "./style.css";
-import ItemView from "./itemview";
-import AssetBody from "./assetBody";
-import Filter from "./filter";
+import {
+    BrowserRouter,
+    Routes, //replaces "Switch" used till v5
+    Route,
+} from "react-router-dom";
+import AboutPage from "./aboutPage.js";
+import Home from "./home.js";
 
 export class Main extends React.Component {
     render() {
         return (
             <div className='vh-100 d-flex flex-column'>
-                <Header/>
-                <Filter/>
-                <main className='d-flex flex-row flex-fill overflow-hidden'>
-                    <ItemView/>
-                    <AssetBody/>
-                </main>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/about" element={<AboutPage />} />
+                    </Routes>
+                </BrowserRouter>
             </div>
         );
     }

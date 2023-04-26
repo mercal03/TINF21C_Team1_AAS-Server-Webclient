@@ -99,7 +99,7 @@ class Filter extends React.Component {
                 }
             });
             newAssetArray = [...new Set(newAssetArray)];
-            newAssetArray.unshift("Alle");
+            newAssetArray.unshift("All");
 
         }
         return newAssetArray
@@ -295,7 +295,7 @@ class Filter extends React.Component {
                                     id="manufacturerNameSearchField"
                                     type="text"
                                     className="form-control form-control-dark  w-auto"
-                                    placeholder="Hersteller"
+                                    placeholder="Manufacturer"
                                     onClick={()=>{document.getElementById("error_message_filterForManufacturerName").style.visibility = "hidden"}}
 
                                 ></input>

@@ -20,8 +20,10 @@ class Filter extends React.Component {
         });
         if (newAssetArray.length === 0) {
             //Error Handling
-            alert("No results found");
+            document.getElementById("error_message1").style.visibility = "visible";
         } else {
+            //Deletes error messages from a wrong search before, if an Asset is found
+            document.getElementById("error_message1").style.visibility = "hidden";
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
             index.render(<Main/>);
         }
@@ -56,7 +58,9 @@ class Filter extends React.Component {
                             let newAsset = [];
                             shells.forEach((element) => {
                                 if (element["idShort"] && element["idShort"] === option) {
-                                    newAsset.push(element)
+                                    newAsset.push(element);
+                                    //Deletes error messages from a wrong search before, if an Asset is found
+                                    document.getElementById("error_message1").style.visibility = "hidden";
                                 }
                             })
                             if (newAsset.length === 0) {
@@ -305,9 +309,6 @@ class Filter extends React.Component {
                 </Dropdown>
                 {/* Suchfeldleiste */}
                 <form autoComplete="off" onBlur={async (event) => {await new Promise(resolve => setTimeout(resolve, 200)); document.getElementById("autoCompleteList").style.display='none';}} onSubmit={(event) => {event.preventDefault()}}>
-                    <div className="error_message" style={{ visibility: "visible", color: "darkred" }} >
-                        Keine Einträge gefunden
-                    </div>
                     <div className="search-bar-container d-flex flex-row bg-white align-items-center input-group">
                             <input
                                 id={"searchField"}
@@ -342,11 +343,15 @@ class Filter extends React.Component {
                                     value="X"
                                     alt="Clear the search form"
                                     onClick={this.deleteSearchInput}
+                                    onClick={()=>{document.getElementById("error_message1").style.visibility = "hidden"}}
                                 />
                             </div>
                     </div>
                     <ul id="autoCompleteList" className="bg-white border rounded shadow-sm"></ul>
                 </form>
+                <div className="error_message" id="error_message1" style={{ visibility: "hidden", color: "darkred" }} >
+                    Keine Einträge gefunden
+                </div>
             </div>
         );
     }

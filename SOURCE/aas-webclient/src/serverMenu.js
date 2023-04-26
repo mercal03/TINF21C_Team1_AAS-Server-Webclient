@@ -21,6 +21,8 @@ class ServerMenu extends React.Component {
         index.render(<Main/>);
         let url = document.getElementById("server-url").value;
         window.sessionStorage.setItem("url", url);
+        document.getElementById("error_message1").style.visibility = "hidden";
+        document.getElementById("searchField").value = "";
         getFullShellData();
     }
 

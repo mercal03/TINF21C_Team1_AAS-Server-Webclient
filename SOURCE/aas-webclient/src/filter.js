@@ -38,52 +38,50 @@ class Filter extends React.Component {
         })
 
         const input = document.getElementById("searchField").value.toLowerCase();
-        const autoCompleteList = document.getElementById('autoCompleteList');
-        const searchField = document.getElementById('searchField');
+            const autoCompleteList = document.getElementById('autoCompleteList');
+            const searchField = document.getElementById('searchField');
 
-        autoCompleteList.innerHTML = '';
+            autoCompleteList.innerHTML = '';
 
-        const filteredOptions = options.filter(option => option.toLowerCase().startsWith(input));
-        filteredOptions.forEach(option => {
-            const li = document.createElement('li' );
-            li.textContent = option;
-            li.setAttribute('id', option);
-            li.classList.add('autoCompleteItem');
-            li.addEventListener('click',()  => {
-                    document.getElementById("autoCompleteList").style.display='none';
-                    let shells = JSON.parse(window.sessionStorage.getItem("shells"));
-                    let newAsset = [];
-                    shells.forEach((element) => {
-                        if(element["idShort"] && element["idShort"] === option){
-                            newAsset.push(element)
+            const filteredOptions = options.filter(option => option.toLowerCase().startsWith(input));
+            if(input.length !== 0) {
+                filteredOptions.forEach(option => {
+                    const li = document.createElement('li');
+                    li.textContent = option;
+                    li.setAttribute('id', option);
+                    li.classList.add('autoCompleteItem');
+                    li.addEventListener('click', () => {
+                            document.getElementById("autoCompleteList").style.display = 'none';
+                            let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+                            let newAsset = [];
+                            shells.forEach((element) => {
+                                if (element["idShort"] && element["idShort"] === option) {
+                                    newAsset.push(element)
+                                }
+                            })
+                            if (newAsset.length === 0) {
+                                //Error Handling
+                                alert("No results found");
+                            } else {
+                                window.sessionStorage.setItem("content", JSON.stringify(newAsset));
+                                index.render(<Main/>);
+                            }
                         }
-                    })
-                if (newAsset.length === 0) {
+                    )
+                    autoCompleteList.appendChild(li);
+                });
+            }
+            else{
+                if (shells.length === 0) {
                     //Error Handling
                     alert("No results found");
                 } else {
-                    window.sessionStorage.setItem("content", JSON.stringify(newAsset));
+                    window.sessionStorage.setItem("content", JSON.stringify(shells));
                     index.render(<Main/>);
                 }
-                }
-            )
-            autoCompleteList.appendChild(li);
-        });
-        autoCompleteList.style.display='block';
-    }
-
-    getAssetNames() {
-        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
-        let AssetNames = [];
-        shells.forEach((element) => {
-            if (element["idShort"]) {
-                console.log(element["idShort"])
-                AssetNames.push(element["idShort"])
             }
-        })
-        alert("HALLO")
-        return AssetNames
-    }
+            autoCompleteList.style.display = 'block';
+        }
 
     getManufactureName() {
         let newAssetArray = [];

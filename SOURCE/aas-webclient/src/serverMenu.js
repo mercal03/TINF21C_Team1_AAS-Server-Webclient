@@ -21,6 +21,8 @@ class ServerMenu extends React.Component {
         index.render(<Main/>);
         let url = document.getElementById("server-url").value;
         window.sessionStorage.setItem("url", url);
+        document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
+        document.getElementById("searchField").value = "";
         getFullShellData();
     }
 
@@ -28,7 +30,7 @@ class ServerMenu extends React.Component {
         return (
             <Dropdown className="mx-2" autoClose="outside" variant="light">
                 <Dropdown.Toggle id="dropdown-autoclose-outside">
-                    Server Menü
+                    Server Menu
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item>

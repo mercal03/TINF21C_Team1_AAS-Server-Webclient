@@ -16,7 +16,6 @@ export class Main extends React.Component {
             <div className='vh-100 d-flex flex-column'>
                 <BrowserRouter>
                     <Routes>
-                        <Route element={<Home/>}/>
                         <Route path="https://mercal03.github.io/TINF21C_Team1_AAS-Server-Webclient/" element={<Home />} />
                         <Route path="https://mercal03.github.io/TINF21C_Team1_AAS-Server-Webclient/about" element={<AboutPage />} />
                     </Routes>

@@ -107,9 +107,8 @@ class Filter extends React.Component {
     filterForManufacturerName(manufacturerNameDropDown) {
         let newAssetArray = [];
         let shells = JSON.parse(window.sessionStorage.getItem("shells"));
-        console.log(manufacturerNameDropDown)
         if (manufacturerNameDropDown) {
-            if (manufacturerNameDropDown === "Alle") {
+            if (manufacturerNameDropDown === "All") {
                 newAssetArray = shells;
             } else {
                 shells.forEach((element) => {

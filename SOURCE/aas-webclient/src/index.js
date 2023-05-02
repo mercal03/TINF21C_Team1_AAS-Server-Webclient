@@ -14,12 +14,14 @@ export class Main extends React.Component {
     render() {
         return (
             <div className='vh-100 d-flex flex-column'>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/about" element={<AboutPage />} />
-                    </Routes>
-                </BrowserRouter>
+                <Home/>
+                {/*<BrowserRouter>*/}
+                {/*    <Routes>*/}
+                {/*        <Route element={<Home/>}/>*/}
+                {/*        <Route path="/" element={<Home />} />*/}
+                {/*        <Route path="/about" element={<AboutPage />} />*/}
+                {/*    </Routes>*/}
+                {/*</BrowserRouter>*/}
             </div>
         );
     }

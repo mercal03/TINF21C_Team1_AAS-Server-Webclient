@@ -20,8 +20,9 @@ class Filter extends React.Component {
         });
         if (newAssetArray.length === 0) {
             //Error Handling
-            alert("No results found");
+            document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
         } else {
+            document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
             index.render(<Main/>);
         }
@@ -57,11 +58,13 @@ class Filter extends React.Component {
                             shells.forEach((element) => {
                                 if (element["idShort"] && element["idShort"] === option) {
                                     newAsset.push(element)
+                                    //Deletes error messages from a wrong search before, if an Asset is found
+                                    document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
                                 }
                             })
                             if (newAsset.length === 0) {
                                 //Error Handling
-                                alert("No results found");
+                                document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
                             } else {
                                 window.sessionStorage.setItem("content", JSON.stringify(newAsset));
                                 index.render(<Main/>);
@@ -74,7 +77,7 @@ class Filter extends React.Component {
             else{
                 if (shells.length === 0) {
                     //Error Handling
-                    alert("No results found");
+                    document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
                 } else {
                     window.sessionStorage.setItem("content", JSON.stringify(shells));
                     index.render(<Main/>);
@@ -95,7 +98,7 @@ class Filter extends React.Component {
                 }
             });
             newAssetArray = [...new Set(newAssetArray)];
-            newAssetArray.unshift("Alle");
+            newAssetArray.unshift("All");
 
         }
         return newAssetArray
@@ -124,8 +127,9 @@ class Filter extends React.Component {
         }
         if (newAssetArray.length === 0) {
             //Error Handling
-            alert("No results found");
+            document.getElementById("error_message_filterForManufacturerName").style.visibility = "visible";
         } else {
+            document.getElementById("error_message_filterForManufacturerName").style.visibility = "hidden";
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
             index.render(<Main/>);
         }
@@ -153,8 +157,9 @@ class Filter extends React.Component {
         }
         if (newAssetArray.length === 0) {
             //Error Handling
-            alert("No results found");
+            document.getElementById("error_message_filterForManufacturerName").style.visibility = "visible";
         } else {
+            document.getElementById("error_message_filterForManufacturerName").style.visibility = "hidden";
             window.sessionStorage.setItem("content", JSON.stringify(newAssetArray));
             index.render(<Main/>);
         }
@@ -260,11 +265,11 @@ class Filter extends React.Component {
                     align="end"
                 >
                     <Dropdown.Toggle id="dropdown-autoclose-true">
-                        Jahr
+                        Year
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")}>älteste zuerst</DropdownItem>
-                        <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")}>neuste zuerst</DropdownItem>
+                        <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")}>oldest first</DropdownItem>
+                        <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")}>newest first</DropdownItem>
                     </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown
@@ -274,7 +279,7 @@ class Filter extends React.Component {
                     align="end"
                 >
                     <Dropdown.Toggle id="dropdown-autoclose-outside">
-                        Hersteller
+                        Manufacturer
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item>
@@ -286,7 +291,7 @@ class Filter extends React.Component {
                                     id="manufacturerNameSearchField"
                                     type="text"
                                     className="form-control form-control-dark  w-auto"
-                                    placeholder="Hersteller"
+                                    placeholder="Manufacturer"
                                 ></input>
                                 <button
                                     type="submit"
@@ -296,6 +301,9 @@ class Filter extends React.Component {
                                     Search
                                 </button>
                             </form>
+                            <div className={"error_message"} id="error_message_filterForManufacturerName" style={{ visibility: "hidden", color: "darkred" }}>
+                                No entries found
+                            </div>
                         </Dropdown.Item>
                         {this.getManufactureName().map(element => {
                             return <Dropdown.Item value={element}
@@ -344,6 +352,9 @@ class Filter extends React.Component {
                     </div>  
                     <ul id="autoCompleteList" className="bg-white border rounded shadow-sm"></ul>
                 </form>
+                <div className={"error_message"} id="error_message_NextToSearchField" style={{ visibility: "hidden", color: "darkred" }}>
+                    No entries found
+                </div>
             </div>
         );
     }

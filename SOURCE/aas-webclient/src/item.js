@@ -15,6 +15,7 @@ class Item extends React.Component {
             window.sessionStorage.setItem("shellBody", JSON.stringify(this.props.shell));
             index.render(<Main/>);
         }
+        document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
     }
     render() {
         let name = this.props.shell.idShort;

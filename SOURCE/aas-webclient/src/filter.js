@@ -18,6 +18,11 @@ class Filter extends React.Component {
                 newAssetArray.push(element);
             }
         });
+        //kleiner Spaß-------------------------------------
+        if(searchInput === "luka"){
+            window.open("https://media.licdn.com/dms/image/C4D03AQGgoDd-BaTu4Q/profile-displayphoto-shrink_800_800/0/1646867801108?e=2147483647&v=beta&t=PHxi3-KyHUS_WnGkT2lMsGWyxIVCBmuazelUTlKpb4k")
+        }
+        //-------------------------------------------------
         if (newAssetArray.length === 0) {
             //Error Handling
             document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
@@ -136,7 +141,7 @@ class Filter extends React.Component {
 
     searchForManufacturerName() {
         let newAssetArray = [];
-        let shells = JSON.parse(window.sessionStorage.getItem("content"));
+        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
         let manufacturerNameSearchField = document
             .getElementById("manufacturerNameSearchField")
             .value.toLowerCase();

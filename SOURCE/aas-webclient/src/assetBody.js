@@ -5,12 +5,17 @@ class AssetBody extends React.Component {
     changeContent = (event) => {
         this.clearView();
         document.getElementById(event.target.innerHTML).hidden = false;
+        event.target.classList.add("bg-primary-subtle");
     };
 
     clearView = () => {
         let children = document.getElementById("bodyContent").children;
         for (let child of children) {
             child.hidden = true;
+        }
+        let children1 = document.getElementById("submodel-buttons").children;
+        for(let child of children1){
+            child.classList.remove("bg-primary-subtle");
         }
     }
 
@@ -55,7 +60,7 @@ class AssetBody extends React.Component {
                         </div>
                         <hr></hr>
                         <div className={"d-flex flex-row"}>
-                            <div className={"d-flex flex-column navigation-buttons"}>
+                            <div className={"d-flex flex-column navigation-buttons"}  id="submodel-buttons">
                                 {Object.entries(shell).map(([key, value]) => {
                                     if (typeof value === "object" && shell[key] !== null) {
                                         return (

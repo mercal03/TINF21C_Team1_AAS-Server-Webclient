@@ -3,6 +3,11 @@ import {index, Main} from "./index";
 export let controller = new AbortController();
 
 async function getData(url) {
+    if (url.search("http") === -1) {
+        alert("Not a correct url");
+        return undefined;
+    }
+
     controller = new AbortController();
     // console.log("Get data of:");
     // console.log(url);
@@ -10,16 +15,13 @@ async function getData(url) {
         signal: controller.signal
     })
         .then(response => {
-            if (!response.ok) {
-                throw new Error("Fetch not ok");
-            }
             return response.json().then(jsonResponse => {
                 return jsonResponse;
             }).catch(err => {
-                console.log(response, err);
+                console.log(err);
             })
         }).catch(err => {
-            console.warn(err);
+            console.log(err);
         });
 }
 

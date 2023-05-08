@@ -2,6 +2,8 @@ import React from "react";
 import {index, Main} from "./index";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownItem from "react-bootstrap/DropdownItem";
+import DropdownToggle from "react-bootstrap/DropdownToggle";
+import DropdownMenu from "react-bootstrap/DropdownMenu";
 
 class Filter extends React.Component {
     filterForName() {
@@ -19,7 +21,7 @@ class Filter extends React.Component {
             }
         });
         //kleiner Spaß-------------------------------------
-        if(searchInput === "luka"){
+        if (searchInput === "luka") {
             window.open("https://media.licdn.com/dms/image/C4D03AQGgoDd-BaTu4Q/profile-displayphoto-shrink_800_800/0/1646867801108?e=2147483647&v=beta&t=PHxi3-KyHUS_WnGkT2lMsGWyxIVCBmuazelUTlKpb4k")
         }
         //-------------------------------------------------
@@ -44,52 +46,51 @@ class Filter extends React.Component {
         })
 
         const input = document.getElementById("searchField").value.toLowerCase();
-            const autoCompleteList = document.getElementById('autoCompleteList');
-            const searchField = document.getElementById('searchField');
+        const autoCompleteList = document.getElementById('autoCompleteList');
+        const searchField = document.getElementById('searchField');
 
-            autoCompleteList.innerHTML = '';
+        autoCompleteList.innerHTML = '';
 
-            const filteredOptions = options.filter(option => option.toLowerCase().startsWith(input));
-            if(input.length !== 0) {
-                filteredOptions.forEach(option => {
-                    const li = document.createElement('li');
-                    li.textContent = option;
-                    li.setAttribute('id', option);
-                    li.classList.add('autoCompleteItem');
-                    li.addEventListener('click', () => {
-                            document.getElementById("autoCompleteList").style.display = 'none';
-                            let shells = JSON.parse(window.sessionStorage.getItem("shells"));
-                            let newAsset = [];
-                            shells.forEach((element) => {
-                                if (element["idShort"] && element["idShort"] === option) {
-                                    newAsset.push(element)
-                                    //Deletes error messages from a wrong search before, if an Asset is found
-                                    document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
-                                }
-                            })
-                            if (newAsset.length === 0) {
-                                //Error Handling
-                                document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
-                            } else {
-                                window.sessionStorage.setItem("content", JSON.stringify(newAsset));
-                                index.render(<Main/>);
+        const filteredOptions = options.filter(option => option.toLowerCase().startsWith(input));
+        if (input.length !== 0) {
+            filteredOptions.forEach(option => {
+                const li = document.createElement('li');
+                li.textContent = option;
+                li.setAttribute('id', option);
+                li.classList.add('autoCompleteItem');
+                li.addEventListener('click', () => {
+                        document.getElementById("autoCompleteList").style.display = 'none';
+                        let shells = JSON.parse(window.sessionStorage.getItem("shells"));
+                        let newAsset = [];
+                        shells.forEach((element) => {
+                            if (element["idShort"] && element["idShort"] === option) {
+                                newAsset.push(element)
+                                //Deletes error messages from a wrong search before, if an Asset is found
+                                document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
                             }
+                        })
+                        if (newAsset.length === 0) {
+                            //Error Handling
+                            document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
+                        } else {
+                            window.sessionStorage.setItem("content", JSON.stringify(newAsset));
+                            index.render(<Main/>);
                         }
-                    )
-                    autoCompleteList.appendChild(li);
-                });
+                    }
+                )
+                autoCompleteList.appendChild(li);
+            });
+        } else {
+            if (shells.length === 0) {
+                //Error Handling
+                document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
+            } else {
+                window.sessionStorage.setItem("content", JSON.stringify(shells));
+                index.render(<Main/>);
             }
-            else{
-                if (shells.length === 0) {
-                    //Error Handling
-                    document.getElementById("error_message_NextToSearchField").style.visibility = "visible";
-                } else {
-                    window.sessionStorage.setItem("content", JSON.stringify(shells));
-                    index.render(<Main/>);
-                }
-            }
-            autoCompleteList.style.display = 'block';
         }
+        autoCompleteList.style.display = 'block';
+    }
 
     getManufactureName() {
         let newAssetArray = [];
@@ -260,37 +261,37 @@ class Filter extends React.Component {
 
 
     render() {
+        const sort =
+            <Dropdown
+                className="my-dropdown"
+                autoClose="true"
+                variant="light"
+                align="end">
+                <DropdownToggle id="dropdown-autoclose-true">
+                    Year
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")}>oldest first</DropdownItem>
+                    <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")}>newest first</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>;
+
         return (
             <div className="px-3 py-1 d-flex flex-row shadow-sm bg-light align-items-center justify-content-start">
-                <Dropdown
-                    className="my-dropdown"
-                    autoClose="true"
-                    variant="light"
-                    align="end"
-                >
-                    <Dropdown.Toggle id="dropdown-autoclose-true">
-                        Year
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <DropdownItem id={"up"} onClick={() => this.sortAsYear("up")}>oldest first</DropdownItem>
-                        <DropdownItem id={"down"} onClick={() => this.sortAsYear("down")}>newest first</DropdownItem>
-                    </Dropdown.Menu>
-                </Dropdown>
+                {window.sessionStorage.getItem("loaded") === "true" ? sort : ""}
                 <Dropdown
                     className="mx-2 my-dropdown"
                     autoClose="outside"
                     variant="light"
-                    align="end"
-                >
-                    <Dropdown.Toggle id="dropdown-autoclose-outside">
+                    align="end">
+                    <DropdownToggle id="dropdown-autoclose-outside">
                         Manufacturer
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item>
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem>
                             <form
                                 className="mx-2 d-flex flex-row"
-                                onSubmit={(event) => event.preventDefault()}
-                            >
+                                onSubmit={(event) => event.preventDefault()}>
                                 <input
                                     id="manufacturerNameSearchField"
                                     type="text"
@@ -300,63 +301,69 @@ class Filter extends React.Component {
                                 <button
                                     type="submit"
                                     className="btn btn-link mx-2 text-nowrap"
-                                    onClick={this.searchForManufacturerName}
-                                >
+                                    onClick={this.searchForManufacturerName}>
                                     Search
                                 </button>
                             </form>
-                            <div className={"error_message"} id="error_message_filterForManufacturerName" style={{ visibility: "hidden", color: "darkred" }}>
+                            <div className={"error_message"} id="error_message_filterForManufacturerName"
+                                 style={{visibility: "hidden", color: "darkred"}}>
                                 No entries found
                             </div>
-                        </Dropdown.Item>
+                        </DropdownItem>
                         {this.getManufactureName().map(element => {
-                            return <Dropdown.Item value={element}
-                                                  onClick={() => this.filterForManufacturerName(element)}> {element} </Dropdown.Item>
+                            return <DropdownItem value={element}
+                                                 onClick={() => this.filterForManufacturerName(element)}> {element} </DropdownItem>
                         })}
-                    </Dropdown.Menu>
+                    </DropdownMenu>
                 </Dropdown>
                 {/* Suchfeldleiste */}
-                <form autoComplete="off" onBlur={async (event) => {await new Promise(resolve => setTimeout(resolve, 200)); document.getElementById("autoCompleteList").style.display='none';}} onSubmit={(event) => {event.preventDefault()}}>
+                <form autoComplete="off" onBlur={async (event) => {
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                    document.getElementById("autoCompleteList").style.display = 'none';
+                }} onSubmit={(event) => {
+                    event.preventDefault()
+                }}>
                     <div className="search-bar-container d-flex flex-row bg-white align-items-center input-group">
-                            <input
-                                id={"searchField"}
-                                className="mr-sm-2 border-0 px-3 py-1 bg-transparent outline-none"
-                                type="text"
-                                placeholder="Search"
-                                aria-label="Search"
-                                onKeyUp={this.autoComplete}
-                            />
-                            <div className="input-group-append d-flex flex-row align-items-center">
-                                <button
-                                    id={"searchInputStringBtn"}
-                                    className="my-2 my-sm-0 d-flex my-search-button"
-                                    type="submit"
-                                    onClick={this.filterForName}
+                        <input
+                            id={"searchField"}
+                            className="mr-sm-2 border-0 px-3 py-1 bg-transparent outline-none"
+                            type="text"
+                            placeholder="Search"
+                            aria-label="Search"
+                            onKeyUp={this.autoComplete}
+                        />
+                        <div className="input-group-append d-flex flex-row align-items-center">
+                            <button
+                                id={"searchInputStringBtn"}
+                                className="my-2 my-sm-0 d-flex my-search-button"
+                                type="submit"
+                                onClick={this.filterForName}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-search"
+                                    viewBox="0 0 16 16"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        fill="currentColor"
-                                        class="bi bi-search"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <path
-                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                    </svg>
-                                </button>
-                                <input
-                                    className="my-search-button px-3"
-                                    type="reset"
-                                    value="X"
-                                    alt="Clear the search form"
-                                    onClick={this.deleteSearchInput}
-                                />
-                            </div>
-                    </div>  
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                            </button>
+                            <input
+                                className="my-search-button px-3"
+                                type="reset"
+                                value="X"
+                                alt="Clear the search form"
+                                onClick={this.deleteSearchInput}
+                            />
+                        </div>
+                    </div>
                     <ul id="autoCompleteList" className="bg-white border rounded shadow-sm"></ul>
                 </form>
-                <div className={"error_message"} id="error_message_NextToSearchField" style={{ visibility: "hidden", color: "darkred" }}>
+                <div className={"error_message"} id="error_message_NextToSearchField"
+                     style={{visibility: "hidden", color: "darkred"}}>
                     No entries found
                 </div>
             </div>

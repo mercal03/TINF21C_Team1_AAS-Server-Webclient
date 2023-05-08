@@ -89,6 +89,7 @@ function searchForKey(json, regex) {
 }
 
 async function getFullShellData() {
+    window.sessionStorage.setItem("loaded", false);
     let apiVersion;
     let url = window.sessionStorage.getItem("url");
     if (!url.endsWith("/")) {
@@ -143,6 +144,7 @@ async function getFullShellData() {
             window.sessionStorage.setItem("shells", JSON.stringify(shells));
             index.render(<Main/>);
         }
+        window.sessionStorage.setItem("loaded", true);
         console.log(shells);
     }
 }
@@ -182,12 +184,14 @@ async function loadSubmodel(id, url, api) {
     url += "/" + (url.search("murr") === -1 ? btoa(id) : id) + "/submodel"
     return getData(url).then(element => {
         if (element !== undefined) {
-            return {
-                semanticId: (element.semanticId.keys[0] ? element.semanticId.keys[0].value : ""),
-                idShort: element.idShort,
-                id: element.id,
-                idEncoded: btoa(element.id),
-                ...extractData(element.submodelElements, element.id, "", api),
+            if (element.semanticId !== undefined) {
+                return {
+                    semanticId: (element.semanticId.keys[0] ? element.semanticId.keys[0].value : ""),
+                    idShort: element.idShort,
+                    id: element.id,
+                    idEncoded: btoa(element.id),
+                    ...extractData(element.submodelElements, element.id, "", api),
+                }
             }
         }
     });

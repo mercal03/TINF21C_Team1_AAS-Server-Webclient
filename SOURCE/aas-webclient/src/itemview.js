@@ -12,7 +12,7 @@ class ItemView extends React.Component {
                 return (
                     <div className="m-2 p-2 col-4 overflow-auto list-group">
                         <h3>Select Asset</h3>
-                        <div id={"submodel-buttons"}>
+                        <div>
                             {allShells.map(shell => {
                                 for (let i = 0; i < shells.length; i++) {
                                     if (shells[i].id === shell.id) {

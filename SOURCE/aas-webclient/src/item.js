@@ -7,11 +7,11 @@ class Item extends React.Component {
 
     openAsset = (e) => {
         //reset submodel buttons
-        let children1 = document.getElementById("submodel-buttons").children;
-        for(let child of children1){
-            child.classList.remove("bg-primary-subtle");
+        let buttons = document.getElementsByClassName("navigation-button");
+        for(let button of buttons){
+            button.classList.remove("bg-primary-subtle");
         }
-        children1[0].classList.add("bg-primary-subtle");
+        buttons[0].classList.add("bg-primary-subtle");
         
         document.getElementById("")
         let parent = document.getElementById(this.props.shell.idShort).parentElement;

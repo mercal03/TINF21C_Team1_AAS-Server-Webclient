@@ -13,9 +13,10 @@ class AssetBody extends React.Component {
         for (let child of children) {
             child.hidden = true;
         }
-        let children1 = document.getElementById("submodel-buttons").children;
-        for(let child of children1){
-            child.classList.remove("bg-primary-subtle");
+        let buttons = document.getElementsByClassName("navigation-button");
+        console.log(buttons);
+        for(let button of buttons){
+            button.classList.remove("bg-primary-subtle");
         }
     }
 
@@ -60,7 +61,7 @@ class AssetBody extends React.Component {
                         </div>
                         <hr></hr>
                         <div className={"d-flex flex-row"}>
-                            <div className={"d-flex flex-column navigation-buttons"}  id="submodel-buttons">
+                            <div className={"d-flex flex-column navigation-buttons"}>
                                 {Object.entries(shell).map(([key, value]) => {
                                     if (typeof value === "object" && shell[key] !== null) {
                                         return (

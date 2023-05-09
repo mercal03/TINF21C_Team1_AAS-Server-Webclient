@@ -24,12 +24,7 @@ class Item extends React.Component {
             index.render(<Main/>);
         }
         document.getElementById("error_message_NextToSearchField").style.visibility = "hidden";
-        //reset submodel buttons
-        let buttons = document.getElementsByClassName("navigation-button");
-        for(let button of buttons){
-            button.classList.remove("bg-primary-subtle");
-        }
-        buttons[0].classList.add("bg-primary-subtle");
+        
     }
     render() {
         let name = this.props.shell.idShort;

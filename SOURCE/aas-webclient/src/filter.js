@@ -276,46 +276,49 @@ class Filter extends React.Component {
                 </DropdownMenu>
             </Dropdown>;
 
+        const filter =
+            <Dropdown
+                className="mx-2 my-dropdown"
+                autoClose="outside"
+                variant="light"
+                align="end">
+                <DropdownToggle id="dropdown-autoclose-outside">
+                    Manufacturer
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem>
+                        <form
+                            className="mx-2 d-flex flex-row"
+                            onSubmit={(event) => event.preventDefault()}>
+                            <input
+                                id="manufacturerNameSearchField"
+                                type="text"
+                                className="form-control form-control-dark  w-auto"
+                                placeholder="Manufacturer"
+                            ></input>
+                            <button
+                                type="submit"
+                                className="btn btn-link mx-2 text-nowrap"
+                                onClick={this.searchForManufacturerName}>
+                                Search
+                            </button>
+                        </form>
+                        <div className={"error_message"} id="error_message_filterForManufacturerName"
+                             style={{visibility: "hidden", color: "darkred"}}>
+                            No entries found
+                        </div>
+                    </DropdownItem>
+                    {this.getManufactureName().map(element => {
+                        return <DropdownItem value={element}
+                                             onClick={() => this.filterForManufacturerName(element)}> {element} </DropdownItem>
+                    })}
+                </DropdownMenu>
+            </Dropdown>;
+
         return (
             <div className="px-3 py-1 d-flex flex-row shadow-sm bg-light align-items-center justify-content-start">
                 {window.sessionStorage.getItem("loaded") === "true" ? sort : ""}
-                <Dropdown
-                    className="mx-2 my-dropdown"
-                    autoClose="outside"
-                    variant="light"
-                    align="end">
-                    <DropdownToggle id="dropdown-autoclose-outside">
-                        Manufacturer
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem>
-                            <form
-                                className="mx-2 d-flex flex-row"
-                                onSubmit={(event) => event.preventDefault()}>
-                                <input
-                                    id="manufacturerNameSearchField"
-                                    type="text"
-                                    className="form-control form-control-dark  w-auto"
-                                    placeholder="Manufacturer"
-                                ></input>
-                                <button
-                                    type="submit"
-                                    className="btn btn-link mx-2 text-nowrap"
-                                    onClick={this.searchForManufacturerName}>
-                                    Search
-                                </button>
-                            </form>
-                            <div className={"error_message"} id="error_message_filterForManufacturerName"
-                                 style={{visibility: "hidden", color: "darkred"}}>
-                                No entries found
-                            </div>
-                        </DropdownItem>
-                        {this.getManufactureName().map(element => {
-                            return <DropdownItem value={element}
-                                                 onClick={() => this.filterForManufacturerName(element)}> {element} </DropdownItem>
-                        })}
-                    </DropdownMenu>
-                </Dropdown>
+                {window.sessionStorage.getItem("loaded") === "true" ? filter : ""}
                 {/* Suchfeldleiste */}
                 <form autoComplete="off" onBlur={async (event) => {
                     await new Promise(resolve => setTimeout(resolve, 200));

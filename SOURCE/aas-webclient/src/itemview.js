@@ -6,19 +6,14 @@ class ItemView extends React.Component {
         if (window.sessionStorage.getItem("url") === null) {
             return <div></div>;
         } else {
-            let allShells = JSON.parse(window.sessionStorage.getItem("shells"));
             let shells = JSON.parse(window.sessionStorage.getItem("content"));
             if (shells !== null && shells !== undefined) {
                 return (
                     <div className="m-2 p-2 col-4 overflow-auto list-group">
                         <h3>Select Asset</h3>
                         <div>
-                            {allShells.map(shell => {
-                                for (let i = 0; i < shells.length; i++) {
-                                    if (shells[i].id === shell.id) {
-                                        return <Item key={shell.idShort} shell={shell}/>
-                                    }
-                                }
+                            {shells.map(shell => {
+                                return <Item key={shell.idShort} shell={shell}/>
                             })}
                         </div>
                     </div>

@@ -14,7 +14,6 @@ class AssetBody extends React.Component {
             child.hidden = true;
         }
         let buttons = document.getElementsByClassName("navigation-button");
-        console.log(buttons);
         for(let button of buttons){
             button.classList.remove("bg-primary-subtle");
         }

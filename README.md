@@ -7,7 +7,7 @@ Most asset administration shells nowadays are technically orientated.
 We want to change this and create the frontend of an asset administartion shell with significantly improved usability.
 
 ## Tasks
-* ### Functional: 
+* ### Functional 
    * Adding AAS-Servers via URL (including Server-Validation)
    * Removing AAS-Servers
    * Display of all digital twins of a selected server
@@ -16,7 +16,7 @@ We want to change this and create the frontend of an asset administartion shell 
    * Filtering of the siplayed assets by properties
    * Error handling
     
-* ### Non-functional:
+* ### Non-functional
    * Intuitiveness
    * Reliability
    * Efficiency

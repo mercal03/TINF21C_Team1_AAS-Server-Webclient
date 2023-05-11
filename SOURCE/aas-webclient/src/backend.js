@@ -140,6 +140,7 @@ async function getFullShellData() {
         for (let i = 0; i < shells.length; i++) {
             await loadBody(shells[i]).then(shell => {
                 shells[i] = shell;
+                console.log(shell);
             });
             window.sessionStorage.setItem("shells", JSON.stringify(shells));
             index.render(<Main/>);

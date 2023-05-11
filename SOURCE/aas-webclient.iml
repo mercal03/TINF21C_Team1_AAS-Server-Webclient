@@ -3,7 +3,7 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$/aas-webclient">
-      <excludeFolder url="file://$MODULE_DIR$/aas-webclient/build" />
+      <excludeFolder url="file://$MODULE_DIR$/aas-webclient/Executable" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
